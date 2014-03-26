@@ -1,0 +1,13 @@
+body { padding: 0px; margin: 0px; font-size: 10px; font-family: Arial; }
+h1{padding: 20px 0 0 20px; page-break-before: auto;}
+.null {width: 40px; vertical-align: middle; text-align: center; color: #c0c0c0; }
+.fretTable { border-collapse: collapse; border-spacing: 0px; margin: 20px 20px 20px 20px; page-break-before: auto; }
+.fretString {width: 32px; height: 32px; vertical-align: middle; text-align: center; }
+.fret { font-size: 12px; width: 40px; height: 32px; vertical-align: middle; text-align: center; border: 1px solid #040404;}
+.fretpitch{ color: black; line-height: 32px ;width:40px; height:32px; font-weight: bold; background-image: url('http://labwrite.ncsu.edu/images/button_dead.gif') !important; background-position: center; background-repeat: no-repeat;}
+.fretroot{ line-height: 32px ;width:40px; height:32px; font-weight: bold; color: black; background-image: url('http://labwrite.ncsu.edu/images/button_live.gif') !important; background-position: center; background-repeat: no-repeat;}
+.fret_0{ width: 32px; border: none; font-weight: bold;}
+.fretSpec { background-color: #f0f0f0;}
+.fretTableCaption{font-size: 12px; font-weight: bold; text-align: left; color: #010a0a; height: 15px; }
+.headerFretGroup{font-size: 14px; padding: 0 0 0 20px; font-weight: bold; color: #EEA24D; page-break-before: always;}
+/*url('http://www.freeiconsweb.com/Icons-show/vector-social-media-icons/button-white.png')*/

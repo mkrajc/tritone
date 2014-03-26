@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="scaleMajor" class="org.mech.tritone.music.model.ScalePattern">
+		<property name="name" value="major scale"></property>
+		<property name="abbrv" value="scaleMajor" />
+		<property name="key" value="scaleMajor" />
+		<property name="patterns">
+			<list value-type="java.lang.Integer">
+				<value>0</value>
+				<value>2</value>
+				<value>4</value>
+				<value>5</value>
+				<value>7</value>
+				<value>9</value>
+				<value>11</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="scaleMinorHarmonic" class="org.mech.tritone.music.model.ScalePattern">
+		<property name="name" value="harmonic minor scale"></property>
+		<property name="abbrv" value="scaleMinorHarmonic" />
+		<property name="key" value="scaleMinorHarmonic" />
+		<property name="patterns">
+			<list value-type="java.lang.Integer">
+				<value>0</value>
+				<value>2</value>
+				<value>3</value>
+				<value>5</value>
+				<value>7</value>
+				<value>8</value>
+				<value>11</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="scaleMinorMelodic" class="org.mech.tritone.music.model.ScalePattern">
+		<property name="name" value="melodic minor scale"></property>
+		<property name="abbrv" value="scaleMinorMelodic" />
+		<property name="key" value="scaleMinorMelodic" />
+		<property name="patterns">
+			<list value-type="java.lang.Integer">
+				<value>0</value>
+				<value>2</value>
+				<value>3</value>
+				<value>5</value>
+				<value>7</value>
+				<value>9</value>
+				<value>11</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="scaleMinor" class="org.mech.tritone.music.model.ScalePattern">
+		<property name="name" value="natural minor scale"></property>
+		<property name="abbrv" value="scaleMinor" />
+		<property name="key" value="scaleMinor" />
+		<property name="patterns">
+			<list value-type="java.lang.Integer">
+				<value>0</value>
+				<value>2</value>
+				<value>3</value>
+				<value>5</value>
+				<value>7</value>
+				<value>8</value>
+				<value>10</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="scaleDorian" class="org.mech.tritone.music.model.ScalePattern">
+		<property name="name" value="dorian mode scale"></property>
+		<property name="abbrv" value="scaleDorian" />
+		<property name="key" value="scaleDorian" />
+		<property name="patterns">
+			<list value-type="java.lang.Integer">
+				<value>0</value>
+				<value>2</value>
+				<value>3</value>
+				<value>5</value>
+				<value>7</value>
+				<value>9</value>
+				<value>10</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="scalePhyrigian" class="org.mech.tritone.music.model.ScalePattern">
+		<property name="name" value="phyrigian mode scale"></property>
+		<property name="abbrv" value="scalePhyrigian" />
+		<property name="key" value="scalePhyrigian" />
+		<property name="patterns">
+			<list value-type="java.lang.Integer">
+				<value>0</value>
+				<value>1</value>
+				<value>3</value>
+				<value>5</value>
+				<value>7</value>
+				<value>8</value>
+				<value>10</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="scaleLydian" class="org.mech.tritone.music.model.ScalePattern">
+		<property name="name" value="lydian mode scale"></property>
+		<property name="abbrv" value="scaleLydian" />
+		<property name="key" value="scaleLydian" />
+		<property name="patterns">
+			<list value-type="java.lang.Integer">
+				<value>0</value>
+				<value>2</value>
+				<value>4</value>
+				<value>6</value>
+				<value>7</value>
+				<value>9</value>
+				<value>11</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="scaleMixolydian" class="org.mech.tritone.music.model.ScalePattern">
+		<property name="name" value="mixolydian mode scale"></property>
+		<property name="abbrv" value="scaleMixolydian" />
+		<property name="key" value="scaleMixolydian" />
+		<property name="patterns">
+			<list value-type="java.lang.Integer">
+				<value>0</value>
+				<value>2</value>
+				<value>4</value>
+				<value>5</value>
+				<value>7</value>
+				<value>9</value>
+				<value>10</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="scaleLocrian" class="org.mech.tritone.music.model.ScalePattern">
+		<property name="name" value="mixolydian mode scale"></property>
+		<property name="abbrv" value="scaleLocrian" />
+		<property name="key" value="scaleLocrian" />
+		<property name="patterns">
+			<list value-type="java.lang.Integer">
+				<value>0</value>
+				<value>1</value>
+				<value>3</value>
+				<value>5</value>
+				<value>6</value>
+				<value>8</value>
+				<value>10</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<bean id="instrumentBass" class="org.mech.tritone.music.model.instrument.string.StringedInstrument">
+		<property name="name" value="bass guitar" />
+		<property name="stringsCount" value="4" />
+		<property name="tuning" ref="tuningBass4" />
+		<property name="pitchRange" value="22" />
+	</bean>
+
+	<bean id="tuningBass4" class="org.mech.tritone.music.model.instrument.Tuning">
+		<property name="key" value="bass"/>
+		<property name="name" value="standard bass tuning"/>
+		<property name="tuning">
+			<list>
+				<value>E.1</value>
+				<value>A.1</value>
+				<value>D.2</value>
+				<value>G.2</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="tuningBass5" class="org.mech.tritone.music.model.instrument.Tuning">
+		<property name="key" value="bass5"/>
+		<property name="name" value="standard 5 string bass tuning"/>
+		<property name="tuning">
+			<list>
+				<value>B.0</value>
+				<value>E.1</value>
+				<value>A.1</value>
+				<value>D.2</value>
+				<value>G.2</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tuningBass5highC" class="org.mech.tritone.music.model.instrument.Tuning">
+		<property name="key" value="bassC"/>
+		<property name="name" value="5 string bass with high C tuning"/>
+		<property name="tuning">
+			<list>
+				<value>E.1</value>
+				<value>A.1</value>
+				<value>D.2</value>
+				<value>G.2</value>
+				<value>C.3</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tuningBass6" class="org.mech.tritone.music.model.instrument.Tuning">
+		<property name="key" value="bass6"/>
+		<property name="name" value="standard 6 string bass tuning"/>
+		<property name="tuning">
+			<list>
+				<value>B.0</value>
+				<value>E.1</value>
+				<value>A.1</value>
+				<value>D.2</value>
+				<value>G.2</value>
+				<value>C.3</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

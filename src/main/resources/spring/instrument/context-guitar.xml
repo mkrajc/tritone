@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+
+	<bean id="tuningGuitar6" class="org.mech.tritone.music.model.instrument.Tuning">
+		<property name="key" value="guitar"/>
+		<property name="name" value="standard guitar tuning"/>
+		<property name="tuning">
+			<list>
+				<value>E.2</value>
+				<value>A.2</value>
+				<value>D.3</value>
+				<value>G.3</value>
+				<value>B.4</value>
+				<value>E.5</value>
+			</list>
+		</property>
+	</bean>
+</beans>

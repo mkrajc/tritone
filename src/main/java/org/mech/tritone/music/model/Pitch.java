@@ -2,24 +2,23 @@ package org.mech.tritone.music.model;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.mech.tritone.music.utils.PitchUtils;
 
 public class Pitch {
-	private int pitchClass;
+	private Tone tone;
 	private int octave;
 
-	public int getPitchClass() {
-		return pitchClass;
-	}
-
-	public Pitch(int pitchClass, int octave) {
+	public Pitch(final Tone tone, final int octave) {
 		super();
-		this.pitchClass = pitchClass;
+		this.tone = tone;
 		this.octave = octave;
 	}
 
-	public void setPitchClass(final int pitchClass) {
-		this.pitchClass = pitchClass;
+	public Tone getTone() {
+		return tone;
+	}
+
+	public void setTone(final Tone tone) {
+		this.tone = tone;
 	}
 
 	public int getOctave() {
@@ -32,11 +31,11 @@ public class Pitch {
 
 	@Override
 	public String toString() {
-		return PitchUtils.toString(this);
+		return getTone().format() + octave;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 
 		if (obj instanceof Pitch == false) {
 			return false;
@@ -45,16 +44,12 @@ public class Pitch {
 			return true;
 		}
 		Pitch pitch = (Pitch) obj;
-		return new EqualsBuilder().appendSuper(super.equals(obj))
-				.append(pitchClass, pitch.getPitchClass())
-				.append(octave, pitch.getOctave()).isEquals();
+		return new EqualsBuilder().appendSuper(super.equals(obj)).append(tone, pitch.getTone()).append(octave, pitch.getOctave())
+				.isEquals();
 	}
-	
+
 	@Override
 	public int hashCode() {
-		 return new HashCodeBuilder(17, 37).
-	       append(pitchClass).
-	       append(octave).
-	       toHashCode();
+		return new HashCodeBuilder(17, 37).append(tone).append(octave).toHashCode();
 	}
 }

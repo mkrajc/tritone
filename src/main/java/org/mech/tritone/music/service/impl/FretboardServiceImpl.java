@@ -8,13 +8,13 @@ import java.util.Set;
 
 import org.mech.tritone.music.model.Pattern;
 import org.mech.tritone.music.model.Pitch;
+import org.mech.tritone.music.model.Tone;
 import org.mech.tritone.music.model.instrument.string.StringedPitch;
 import org.mech.tritone.music.model.instrument.string.Strings;
 import org.mech.tritone.music.model.notation.fretboard.FingeredPitch;
 import org.mech.tritone.music.model.notation.fretboard.Fingering;
 import org.mech.tritone.music.model.notation.fretboard.Fretboard;
 import org.mech.tritone.music.service.FretboardService;
-import org.mech.tritone.music.utils.PitchUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,13 +33,13 @@ public class FretboardServiceImpl implements FretboardService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<StringedPitch> findStringedPitchs(Fretboard fretboard,
-			int pitchClass, int fretFrom, int fretTo) {
+	@Override
+	public List<StringedPitch> findStringedPitchs(final Fretboard fretboard, final Tone tone, final int fretFrom, final int fretTo) {
 		final List<StringedPitch> list = new ArrayList<StringedPitch>();
 
 		// find for each string
 		for (int i = fretboard.getStringCount() - 1; i >= 0; i--) {
-			list.addAll(findStringedPitchs(fretboard, pitchClass, fretFrom, fretTo, i));
+			list.addAll(findStringedPitchs(fretboard, tone, fretFrom, fretTo, i));
 		}
 
 		return list;
@@ -48,14 +48,15 @@ public class FretboardServiceImpl implements FretboardService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<StringedPitch> findStringedPitchs(Fretboard fretboard,
-			int pitchClass, int fretFrom, int fretTo, int stringIndex) {
+	@Override
+	public List<StringedPitch> findStringedPitchs(final Fretboard fretboard, final Tone tone, final int fretFrom, final int fretTo,
+			final int stringIndex) {
 		final List<StringedPitch> list = new ArrayList<StringedPitch>();
 		final Strings string = fretboard.getStrings(stringIndex);
-		
+
 		for (int fretPos = fretFrom; fretPos < fretTo; fretPos++) {
 			final Pitch pitch = string.getPitches().get(fretPos);
-			if (pitch.getPitchClass() == pitchClass) {
+			if (pitch.getTone() == tone) {
 				list.add(new StringedPitch(pitch, string.getIndex(), fretPos));
 			}
 		}
@@ -66,38 +67,38 @@ public class FretboardServiceImpl implements FretboardService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<StringedPitch> findStringedPitchs(Fretboard fretboard,
-			int pitchClass) {
-		return findStringedPitchs(fretboard, pitchClass, 0, fretboard.getLength());
+	@Override
+	public List<StringedPitch> findStringedPitchs(final Fretboard fretboard, final Tone tone) {
+		return findStringedPitchs(fretboard, tone, 0, fretboard.getLength());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<StringedPitch> findStringedPitchs(Fretboard fretboard,
-			int pitchClass, int stringIndex) {
-		return findStringedPitchs(fretboard, pitchClass, 0, fretboard.getLength(), stringIndex);
+	@Override
+	public List<StringedPitch> findStringedPitchs(final Fretboard fretboard, final Tone tone, final int stringIndex) {
+		return findStringedPitchs(fretboard, tone, 0, fretboard.getLength(), stringIndex);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<StringedPitch> findStringedPitchs(Fretboard fretboard,
-			Pattern pattern, int referencePitchClass) {
-		return findStringedPitchs(fretboard, pattern, referencePitchClass, 0, fretboard.getLength());
+	@Override
+	public List<StringedPitch> findStringedPitchs(final Fretboard fretboard, final Pattern pattern, final Tone referenceTone) {
+		return findStringedPitchs(fretboard, pattern, referenceTone, 0, fretboard.getLength());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<StringedPitch> findStringedPitchs(Fretboard fretboard,
-			Pattern pattern, int referencePitchClass, int fretFrom, int fretTo) {
+	@Override
+	public List<StringedPitch> findStringedPitchs(final Fretboard fretboard, final Pattern pattern, final Tone referenceTone,
+			final int fretFrom, final int fretTo) {
 		List<StringedPitch> list = new ArrayList<StringedPitch>();
 
 		for (int i = 0; i < pattern.length(); i++) {
-			int pitchClass = (referencePitchClass + pattern.get(i).intValue()) % 12;
-			list.addAll(findStringedPitchs(fretboard, pitchClass, fretFrom,
-					fretTo));
+			int pitchClass = (referenceTone.getToneClass() + pattern.get(i).intValue()) % 12;
+			list.addAll(findStringedPitchs(fretboard, Tone.fromToneClass(pitchClass), fretFrom, fretTo));
 		}
 
 		return list;
@@ -106,40 +107,31 @@ public class FretboardServiceImpl implements FretboardService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<FingeredPitch> applyFingering(Fretboard fretboard,
-			Pattern pattern, FingeredPitch referenced) {
-		return applyFingering(fretboard,
-				pattern,
-				referenced.getPitch().getPitchClass(),
-				referenced.getFingerIndex(),
-				referenced.getStringIndex());
+	@Override
+	public List<FingeredPitch> applyFingering(final Fretboard fretboard, final Pattern pattern, final FingeredPitch referenced) {
+		return applyFingering(fretboard, pattern, referenced.getPitch().getTone(), referenced.getFingerIndex(), referenced.getStringIndex());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<FingeredPitch> applyFingering(Fretboard fretboard,
-			List<StringedPitch> notesToPlay, 
-			StringedPitch start,
-			int fingerIndex) {
+	@Override
+	public List<FingeredPitch> applyFingering(final Fretboard fretboard, final List<StringedPitch> notesToPlay, final StringedPitch start,
+			final int fingerIndex) {
 		final List<FingeredPitch> result = new ArrayList<FingeredPitch>();
-		final Fingering fingering = new Fingering(start.getPosition(),
-				fingerIndex, start.getStringIndex());
+		final Fingering fingering = new Fingering(start.getPosition(), fingerIndex, start.getStringIndex());
 
 		final Set<String> alreadyProcessed = new HashSet<String>();
-		
+
 		Collections.sort(notesToPlay);
-		
+
 		for (StringedPitch stringedPitch : notesToPlay) {
 			int fInx;
-			if (!alreadyProcessed.contains(PitchUtils.toString(stringedPitch.getPitch()))) {
-				if ((fInx = fingering.getFingerIndex(
-						stringedPitch.getPosition(),
-						stringedPitch.getStringIndex())) > 0
-						&& stringedPitch.getPosition() > 0) 
-				{
-					final FingeredPitch fingeredPitch = new FingeredPitch(	stringedPitch, fInx);
-					alreadyProcessed.add(PitchUtils.toString(fingeredPitch.getPitch()));
+			if (!alreadyProcessed.contains(stringedPitch.getPitch().toString())) {
+				if ((fInx = fingering.getFingerIndex(stringedPitch.getPosition(), stringedPitch.getStringIndex())) > 0
+						&& stringedPitch.getPosition() > 0) {
+					final FingeredPitch fingeredPitch = new FingeredPitch(stringedPitch, fInx);
+					alreadyProcessed.add(fingeredPitch.getPitch().toString());
 					result.add(fingeredPitch);
 				}
 			}
@@ -152,27 +144,22 @@ public class FretboardServiceImpl implements FretboardService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<FingeredPitch> applyFingering(Fretboard fretboard,
-			Pattern pattern, int pitchClass, int fingerIndex, int stringIndex) {
-		final List<StringedPitch> starting = findStringedPitchs(fretboard,
-				pitchClass, stringIndex);
+	@Override
+	public List<FingeredPitch> applyFingering(final Fretboard fretboard, final Pattern pattern, final Tone tone, final int fingerIndex,
+			final int stringIndex) {
+		final List<StringedPitch> starting = findStringedPitchs(fretboard, tone, stringIndex);
 		// get first tone
 		int index = 0;
-		
+
 		if (starting.get(index).getPosition() == 0 && starting.size() > 1) {
 			index++;
 		}
 
-		if (starting.get(index).getPosition() > 0
-				&& (starting.get(index).getPosition() - fingerIndex) <= 0
-				&& starting.size() > index + 1) {
+		if (starting.get(index).getPosition() > 0 && (starting.get(index).getPosition() - fingerIndex) <= 0 && starting.size() > index + 1) {
 			index++;
 		}
-	
-		return applyFingering(fretboard,
-				findStringedPitchs(fretboard, pattern, pitchClass),
-				starting.get(index),
-				fingerIndex);
+
+		return applyFingering(fretboard, findStringedPitchs(fretboard, pattern, tone), starting.get(index), fingerIndex);
 
 	}
 }

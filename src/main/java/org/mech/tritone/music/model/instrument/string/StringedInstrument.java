@@ -3,6 +3,8 @@ package org.mech.tritone.music.model.instrument.string;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.mech.tritone.music.model.Pitch;
@@ -23,18 +25,11 @@ import org.springframework.beans.factory.InitializingBean;
  * 
  * @author martin.krajc
  */
-public class StringedInstrument implements Instrument, HasStrings,
-		InitializingBean {
+public class StringedInstrument implements Instrument, HasStrings {
 
-	/** The strings count. */
 	private int stringsCount;
-
-	/** The tuning. */
 	private Tuning tuning;
-
 	private List<Strings> strings;
-
-	/** The range. */
 	private Range range;
 
 	/**
@@ -42,7 +37,6 @@ public class StringedInstrument implements Instrument, HasStrings,
 	 **/
 	private int pitchRange;
 
-	/** The name. */
 	private String name;
 
 	public StringedInstrument() {
@@ -107,8 +101,8 @@ public class StringedInstrument implements Instrument, HasStrings,
 		this.pitchRange = pitchRange;
 	}
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
+	@PostConstruct
+	public void setup() {
 		if (strings == null && tuning != null) {
 			strings = new ArrayList<Strings>();
 			for (int i = 0; i < stringsCount; i++) {

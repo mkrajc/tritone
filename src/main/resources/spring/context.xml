@@ -7,22 +7,7 @@
 	<import resource="instrument/context-instruments.xml" />
 	<import resource="patterns/context-patterns.xml" />
 	<import resource="render/context-render.xml" />
-	<import resource="context/context-prepare.xml" />
 
-	<!-- <bean -->
-	<!-- class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> -->
-	<!-- <property name="location" value="classpath:it4kt-web.properties" /> -->
-	<!-- <property name="location" value="classpath:it4kt-web-dev.properties" 
-		/> -->
-	<!-- </bean> -->
-
-
-	<context:component-scan base-package="org.mech.tritone.music.service"
-		use-default-filters="false">
-		<context:include-filter type="annotation"
-			expression="org.springframework.stereotype.Service" />
-	</context:component-scan>
-
-	<bean id="beanTracer" class="org.mech.tritone.spring.BeanTracer" />
+	<context:component-scan base-package="org.mech.tritone" />
 
 </beans>

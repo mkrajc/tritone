@@ -1,8 +1,10 @@
 package org.mech.tritone.main;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.List;
+import java.io.Writer;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -12,184 +14,148 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.mech.tritone.main.arg.Arguments;
 import org.mech.tritone.main.arg.CliOptions;
-import org.mech.tritone.music.context.ContextPrepare;
-import org.mech.tritone.music.context.impl.ContextImpl;
-import org.mech.tritone.music.model.ChordPattern;
+import org.mech.tritone.main.cmd.ListAllChordsCommand;
+import org.mech.tritone.main.cmd.ListAllScalesCommand;
+import org.mech.tritone.main.cmd.ListAllTonesCommand;
+import org.mech.tritone.main.cmd.ListAllTuningsCommand;
+import org.mech.tritone.main.cmd.RenderCommand;
 import org.mech.tritone.music.model.Pattern;
-import org.mech.tritone.music.model.Pitch;
-import org.mech.tritone.music.model.ScalePattern;
-import org.mech.tritone.music.model.instrument.Instrument;
+import org.mech.tritone.music.model.Tone;
 import org.mech.tritone.music.model.instrument.Tuning;
-import org.mech.tritone.music.model.instrument.string.StringedInstrument;
-import org.mech.tritone.music.model.notation.fretboard.FingeredPitch;
-import org.mech.tritone.music.model.notation.fretboard.Fretboard;
-import org.mech.tritone.music.service.FretboardService;
 import org.mech.tritone.music.service.MusicDataService;
-import org.mech.tritone.music.utils.PitchUtils;
-import org.mech.tritone.music.utils.PitchUtils.FormatingType;
-import org.mech.tritone.render.html.HtmlRendererEngine;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
+@Component("Main")
 public class Main {
-	
-	private final static PrintWriter P_WRITER = new PrintWriter(System.out);
-	
-	public static void main(String[] args) throws Exception {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				"classpath:spring/context.xml");
-		
-		final MusicDataService dataService = (MusicDataService) applicationContext.getBean("musicDataService");
-//		final FretboardService fretboardService = (FretboardService) applicationContext.getBean("fretboardService");
-		final HtmlRendererEngine htmlRendererEngine = (HtmlRendererEngine) applicationContext.getBean("renderingEngine");
-		final ContextPrepare contextPrepare = (ContextPrepare) applicationContext.getBean("chordContextPrepare");
-		
-		CliOptions options = new CliOptions();
-		
-		CommandLineParser parser = new GnuParser();
-	    try {
-	        // parse the command line arguments
-	        CommandLine line = parser.parse( options, args );
-	        
-	        if(line.getOptions().length == 0){
-	        	help(options);
-	        }
-	        
-		    if( line.hasOption(Arguments.HELP) ) {
-		    	help(options);
-		    }
-		    
-		    if(line.hasOption(Arguments.LIST_CHORDS)){
-		    	P_WRITER.println("Possible chord names");
-		    	List<ChordPattern> patterns = dataService.getAllChordPatterns();
-		    	
-		    	for(Pattern pat : patterns){
-		    		P_WRITER.println(String.format("'%s' - %s", pat.getKey(), pat.getName()));
-		    	}
-		    	P_WRITER.flush();
-		    	System.exit(0);;
-		    }
-		    
-		    if(line.hasOption(Arguments.LIST_SCALE)){
-		    	P_WRITER.println("Possible scale names");
-		    	List<ScalePattern> patterns = dataService.getAllScalePatterns();
-		    	
-		    	for(Pattern pat : patterns){
-		    		P_WRITER.println(String.format("'%s' - %s", pat.getKey(), pat.getName()));
-		    	}
-		    	P_WRITER.flush();
-		    	System.exit(0);;
-		    }
-		    
-		    
-		    if(line.hasOption(Arguments.LIST_TUNING)){
-		    	P_WRITER.println("Possible tunings names");
-		    	
-		    	List<Tuning> tunnings = dataService.getAllTunings();
-		    	
-		    	for(Tuning t : tunnings){
-					P_WRITER.println(String.format(
-							"'%s' - %s",
-							t.getKey(),
-							t.getName()
-									+ " ("
-									+ PitchUtils.format(
-											t.get().toArray(new Pitch[] {}),
-											FormatingType.LETTER_US) + ")"));
-		    	}
-		    	P_WRITER.flush();
-		    	System.exit(0);;
-		    }
-		    
-		    if(line.hasOption(Arguments.EXPORT_PATERN_HTML)){
-		    	String path = line.getOptionValue(Arguments.HTML_PATH,".\\index.html");
-		    	Tuning tuning = null;
-		    	Pattern pattern = null;
-		    	Pitch pitch = null;
-		    	boolean valid = true;
-		    	
-		    	if(!line.hasOption(Arguments.TUNING)){
-		    		System.err.println(String.format("Tuning argument '-%s' is not present in arguments. Please select one, for all tunings use -%s", 
-		    				Arguments.TUNING,
-		    				Arguments.LIST_TUNING));
-		    		valid = false;
-		    	}else if ((tuning = dataService.getTuning(line.getOptionValue(Arguments.TUNING))) == null){
-		    		System.err
-					.println(String
-							.format("Tuning '%s' is not valid. Please select one, for all tunings use -%s",
-									line.getOptionValue(Arguments.TUNING),
-									Arguments.TUNING));
-		    		valid = false;
-		    	}
-		    	if(!line.hasOption(Arguments.PATTERN)){
-					System.err
-							.println(String
-									.format("Pattern argument '-%s' is not present in arguments. Please select one, for all chords use -%s and for all scales -%s ",
-											Arguments.PATTERN,
-											Arguments.LIST_CHORDS,
-											Arguments.LIST_SCALE));
-					valid = false;
-		    	}else if((pattern = dataService.getPattern(line.getOptionValue(Arguments.PATTERN))) == null){
-		    		System.err
-					.println(String
-							.format("Pattern '%s' is not valid. Please select one, for all chords use -%s and for all scales -%s",
-									line.getOptionValue(Arguments.PATTERN),
-									Arguments.LIST_CHORDS,
-									Arguments.LIST_SCALE));
-		    		valid = false;
-		    	}
-				if (!line.hasOption(Arguments.TONE)) {
-					System.err.println(String.format(
-							"Tone argument '-%s' is not present in arguments.",
-							Arguments.TONE));
-					valid = false;
-				} else {
-					try {
-						pitch = PitchUtils.toPitch(line
-								.getOptionValue(Arguments.TONE));
-					} catch (Exception e) {
-						System.err.println(String.format(
-								"Tone '%s' is not valid.",
-								line.getOptionValue(Arguments.TONE)));
-						valid = false;
-					}
 
-				}
-		    	
-		    	if(!valid){
-		    		System.exit(0);
-		    	}
-		    	
-		    	System.out.println("exporting to html: " + path);
-		    	if(!path.startsWith(".")){
-		    		path = ".\\" + path;
-		    	}
-		    	
-		    	ContextImpl argums = new ContextImpl();
-				argums.put(ContextPrepare.PITCH_CLASS, pitch.getPitchClass());
-				argums.put(ContextPrepare.CHORD_PATTERN_NAME, pattern.getKey());
-				argums.put(ContextPrepare.TUNING_NAME, tuning.getKey());
-				argums.put(ContextPrepare.HTML_PATH, path );
-				
-				htmlRendererEngine.render(contextPrepare.prepare(argums));
-				
-				System.out.println("done");
-		    	return;
-		    }
-		    
-	    }
-	    catch( ParseException exp ) {
-	        // oops, something went wrong
-	        System.err.println( "Parsing failed.  Reason: " + exp.getMessage());
-	    }
-	    
-	
+	private static final String DEFAULT_TUNING = "guitar";
+	private static final String DEFAULT_PATTERN = "major";
+	private static final String DEFAULT_TONE = "C";
 
+	@Autowired
+	private ListAllChordsCommand listAllChordsCommand;
+
+	@Autowired
+	private ListAllScalesCommand listAllScalesCommand;
+
+	@Autowired
+	private ListAllTuningsCommand listAllTuningsCommand;
+
+	@Autowired
+	private ListAllTonesCommand listAllTonesCommand;
+
+	@Autowired
+	private RenderCommand renderCommand;
+
+	@Autowired
+	private MusicDataService dataService;
+
+	public void process(final String... args) {
+		final CliOptions options = new CliOptions();
+		final CommandLineParser parser = new GnuParser();
+
+		try {
+			final CommandLine line = parser.parse(options, args);
+
+			if (line.hasOption(Arguments.HELP)) {
+				help(options);
+			}
+
+			if (line.hasOption(Arguments.LIST_CHORDS)) {
+				listAllChordsCommand.execute();
+				System.exit(0);
+			}
+
+			if (line.hasOption(Arguments.LIST_SCALE)) {
+				listAllScalesCommand.execute();
+				System.exit(0);
+			}
+
+			if (line.hasOption(Arguments.LIST_TUNING)) {
+				listAllTuningsCommand.execute();
+				System.exit(0);
+			}
+
+			if (line.hasOption(Arguments.LIST_TONE)) {
+				listAllTonesCommand.execute();
+				System.exit(0);
+			}
+
+			renderCommand.execute(prepareWriter(line), preparePattern(line), prepareTuning(line), prepareTone(line));
+			System.exit(0);
+
+		} catch (ParseException exp) {
+			System.err.println("Parsing failed.  Reason: " + exp.getMessage());
+			System.exit(1);
+		} catch (IOException e) {
+			System.err.println("IO exception.  Reason: " + e.getMessage());
+			System.exit(1);
+		}
 	}
-	
-	private static void help(Options options){
+
+	private Writer prepareWriter(final CommandLine commandLine) throws IOException {
+		final String path = commandLine.getOptionValue(Arguments.FILE_PATH);
+
+		if (path != null) {
+			File file = new File(path);
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			return new FileWriter(file);
+		}
+		return new PrintWriter(System.out);
+	}
+
+	private Tuning prepareTuning(final CommandLine commandLine) throws ParseException {
+		final String tuningValue = commandLine.getOptionValue(Arguments.TUNING, DEFAULT_TUNING);
+
+		final Tuning tuning = dataService.getTuning(tuningValue);
+
+		if (tuning == null) {
+			throw new ParseException(String.format("Tuning '%s' is not valid. Please select one, for all tunings use -%s", tuningValue,
+					Arguments.LIST_TUNING));
+		}
+		return tuning;
+	}
+
+	private Pattern preparePattern(final CommandLine commandLine) throws ParseException {
+		final String pttrnValue = commandLine.getOptionValue(Arguments.PATTERN, DEFAULT_PATTERN);
+
+		final Pattern pattern = dataService.getPattern(pttrnValue);
+
+		if (pttrnValue == null) {
+			throw new ParseException(String.format(
+					"Pattern '%s' is not valid. Please select one, for all chords use -%s and for all scales -%s",
+					commandLine.getOptionValue(Arguments.PATTERN), Arguments.LIST_CHORDS, Arguments.LIST_SCALE));
+		}
+		return pattern;
+	}
+
+	private Tone prepareTone(final CommandLine commandLine) throws ParseException {
+		final String toneValue = commandLine.getOptionValue(Arguments.TONE, DEFAULT_TONE);
+		try {
+			return Tone.valueOf(toneValue.toUpperCase());
+		} catch (IllegalArgumentException ex) {
+			throw new ParseException(String.format("Tone '%s' is not valid. Please select one, for all tones use -%s", toneValue,
+					Arguments.LIST_TONE));
+		}
+	}
+
+	private void help(final Options options) {
 		HelpFormatter formatter = new HelpFormatter();
-    	formatter.printHelp("tritone", options);
-    	System.exit(0);
+		formatter.printHelp("tritone", options);
+		System.exit(0);
 	}
+
+	public static void main(final String[] args) throws Exception {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/context.xml");
+
+		final Main main = (Main) applicationContext.getBean("Main");
+		main.process(args);
+
+	}
+
 }

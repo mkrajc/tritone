@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.mech.tritone.music.context.MusicRenderingContext;
+import org.mech.tritone.music.model.Tone;
 import org.mech.tritone.music.model.instrument.string.StringedPitch;
 import org.mech.tritone.music.model.instrument.string.Strings;
 import org.mech.tritone.music.model.notation.fretboard.FingeredPitch;
 import org.mech.tritone.music.model.notation.fretboard.Fretboard;
-import org.mech.tritone.music.utils.PitchUtils;
-import org.mech.tritone.music.utils.PitchUtils.FormatingType;
 import org.mech.tritone.render.html.AbstractHtmlRenderer;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -20,45 +19,40 @@ import org.springframework.util.CollectionUtils;
 import com.googlecode.jatl.Html;
 
 @Component("rendererFretboard")
-public class FretboardHtmlRenderer extends
-		AbstractHtmlRenderer<MusicRenderingContext> {
+public class FretboardHtmlRenderer extends AbstractHtmlRenderer<MusicRenderingContext> {
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public MusicRenderingContext renderHtml(final MusicRenderingContext context) {
 		Fretboard fretboard;
-		int from, to, root;
+		int from, to;
 		boolean displayStrings;
 		List objects;
 		String caption;
 
-		fretboard = context.get(MusicRenderingContext.FRETBOARD,
-				Fretboard.class);
+		fretboard = context.get(MusicRenderingContext.FRETBOARD, Fretboard.class);
 
 		if (fretboard == null) {
-			throw new IllegalArgumentException(
-					"fretboard is not in the context");
+			throw new IllegalArgumentException("fretboard is not in the context");
 		}
 
 		from = context.get(MusicRenderingContext.PRM_FRET_FROM, Integer.class, 0);
 		to = context.get(MusicRenderingContext.PRM_FRET_TO, Integer.class, fretboard.getLength());
 		displayStrings = context.get(MusicRenderingContext.PRM_FRET_DISPLAY_STRINGS, Boolean.class, true);
 		objects = context.get(MusicRenderingContext.FRETBOARD_RENDERS, List.class);
-		root = context.get(MusicRenderingContext.PRM_ROOT, Integer.class, -1);
+		Tone root = context.get(MusicRenderingContext.PRM_ROOT, Tone.class);
 		caption = context.get(MusicRenderingContext.FRETBOARD_CAPTION, String.class);
-		
 
 		final Map<Integer, Map<Integer, List>> renders = prepareRenders(objects);
 
-		createFretboardHtml(context.getWriter(), fretboard, from, to,
-				displayStrings, renders, root, caption);
+		createFretboardHtml(context.getWriter(), fretboard, from, to, displayStrings, renders, root, caption);
 
 		return context;
 
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private Map<Integer, Map<Integer, List>> prepareRenders(List objects) {
+	private Map<Integer, Map<Integer, List>> prepareRenders(final List objects) {
 		Map<Integer, Map<Integer, List>> map = new HashMap<Integer, Map<Integer, List>>();
 
 		if (!CollectionUtils.isEmpty(objects)) {
@@ -89,28 +83,21 @@ public class FretboardHtmlRenderer extends
 		return map;
 	}
 
-	protected void createFretboardHtml(
-			Writer writer,
-			final Fretboard fretboard,
-			final int fromFret,
-			final int toFret,
-			final boolean displayStrings,
-			@SuppressWarnings("rawtypes") final Map<Integer, Map<Integer, List>> renders,
-			final int root,
+	protected void createFretboardHtml(final Writer writer, final Fretboard fretboard, final int fromFret, final int toFret,
+			final boolean displayStrings, @SuppressWarnings("rawtypes") final Map<Integer, Map<Integer, List>> renders, final Tone root,
 			final String caption) {
 
 		final Html html = new Html(writer);
 		html.table().attr("class", "fretTable");
-		
-		if(caption != null){
+
+		if (caption != null) {
 			html.caption().attr("class", "fretTableCaption").text(caption).end();
 		}
-		
+
 		html.tr();
 		for (int i = fromFret; i < toFret; i++) {
 			html.td().attr("class", "null").div();
-			if (i == 3 || i == 5 || i == 7 || i == 10 || i == 12 || i == 15
-					|| i == 17 || i == 19) {
+			if (i == 3 || i == 5 || i == 7 || i == 10 || i == 12 || i == 15 || i == 17 || i == 19) {
 				html.text(Integer.toString(i));
 			}
 			html.end(2);
@@ -119,13 +106,12 @@ public class FretboardHtmlRenderer extends
 
 		for (int x = fretboard.getStringCount() - 1; x >= 0; x--) {
 			Strings strng = fretboard.getStrings(x);
-					
+
 			html.tr();
 			for (int i = fromFret; i < toFret; i++) {
 				String clazz = "fret fret_" + i;
 
-				if (i == 3 || i == 5 || i == 7 || i == 10 || i == 12 || i == 15
-						|| i == 17 || i == 19) {
+				if (i == 3 || i == 5 || i == 7 || i == 10 || i == 12 || i == 15 || i == 17 || i == 19) {
 					clazz += " fretSpec";
 				}
 
@@ -136,32 +122,26 @@ public class FretboardHtmlRenderer extends
 						if (FingeredPitch.class.isInstance(o)) {
 							FingeredPitch pitch = (FingeredPitch) o;
 							html.div();
-							if (pitch.getPitch().getPitchClass() == root) {
+							if (pitch.getPitch().getTone() == root) {
 								html.attr("class", "fretroot");
 							} else {
 								html.attr("class", "fretpitch");
 							}
-							html.text(Integer.toString(pitch.getFingerIndex()) + " " + 
-									PitchUtils.format(pitch.getPitch(), FormatingType.LETTER_US))
-									.end();
+							html.text(Integer.toString(pitch.getFingerIndex()) + " " + pitch.getPitch().getTone()).end();
 						} else if (StringedPitch.class.isInstance(o)) {
 							StringedPitch pitch = (StringedPitch) o;
 							html.div();
-							if (pitch.getPitch().getPitchClass() == root) {
+							if (pitch.getPitch().getTone() == root) {
 								html.attr("class", "fretroot");
 							} else {
 								html.attr("class", "fretpitch");
 							}
-							html.text(
-									PitchUtils.format(pitch.getPitch(),FormatingType.LETTER_US))
-									.end();
+							html.text(pitch.getPitch().getTone().format()).end();
 						}
 					}
 				} else if (i == 0 && displayStrings) {
 					html.div();
-					html.text(
-							PitchUtils.format(strng.getRoot(),
-									FormatingType.LETTER_US)).end();
+					html.text(strng.getRoot().getTone().format()).end();
 				}
 
 				html.end();
@@ -172,7 +152,7 @@ public class FretboardHtmlRenderer extends
 	}
 
 	@Override
-	public boolean supports(MusicRenderingContext context) {
+	public boolean supports(final MusicRenderingContext context) {
 		return context.get(MusicRenderingContext.FRETBOARD, Fretboard.class) != null;
 	}
 

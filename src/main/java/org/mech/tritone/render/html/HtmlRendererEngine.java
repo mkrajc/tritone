@@ -1,12 +1,10 @@
 package org.mech.tritone.render.html;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.mech.tritone.music.context.MusicRenderingContext;
 import org.mech.tritone.render.RendererDispatcher;
 import org.mech.tritone.render.RenderingContext;
 import org.mech.tritone.render.RenderingContextDispatcher;
@@ -17,9 +15,7 @@ public class HtmlRendererEngine {
 
 	private RendererDispatcher dispatcher;
 
-	public void render(RenderingContext context) {
-		final String path = context.get(MusicRenderingContext.HTML_PATH, String.class);
-		final File file = new File(path);
+	public void render(final Writer writer, final RenderingContext context) {
 		RenderingContext renderHtmlContext = context;
 
 		try {
@@ -34,7 +30,7 @@ public class HtmlRendererEngine {
 			//
 			if (RenderingContextDispatcher.class.isInstance(context)) {
 				for (RenderingContext mContext : ((RenderingContextDispatcher) context).getContexts()) {
-					 dispatcher.dispatchRender(mContext);
+					dispatcher.dispatchRender(mContext);
 				}
 			} else {
 				renderHtmlContext = dispatcher.dispatchRender(context);
@@ -44,8 +40,7 @@ public class HtmlRendererEngine {
 			html.endAll();
 			html.done();
 
-			FileUtils.writeStringToFile(file, renderHtmlContext.getWriter()
-					.toString(), "utf-8");
+			writer.write(renderHtmlContext.getWriter().toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,7 +57,7 @@ public class HtmlRendererEngine {
 		return dispatcher;
 	}
 
-	public void setDispatcher(RendererDispatcher dispatcher) {
+	public void setDispatcher(final RendererDispatcher dispatcher) {
 		this.dispatcher = dispatcher;
 	}
 }

@@ -1,7 +1,6 @@
 package org.mech.tritone.music.model.instrument;
 
 import org.mech.tritone.music.model.Pitch;
-import org.mech.tritone.music.utils.PitchUtils;
 
 public class Range {
 
@@ -16,16 +15,16 @@ public class Range {
 		return to;
 	}
 
-	public void setFrom(Pitch from) {
+	public void setFrom(final Pitch from) {
 		this.from = from;
 	}
 
-	public void setTo(Pitch to) {
+	public void setTo(final Pitch to) {
 		this.to = to;
 	}
-	
+
 	@Override
 	public String toString() {
-		return PitchUtils.toString(from) + " - " + PitchUtils.toString(to);
+		return from + " - " + to;
 	}
 }

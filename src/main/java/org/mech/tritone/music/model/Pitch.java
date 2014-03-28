@@ -3,7 +3,12 @@ package org.mech.tritone.music.model;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-public class Pitch {
+/**
+ * Pitch represent tone with some pitch level. So C4 is concrete pitch and
+ * physicaly can be represented by frequency of pitch
+ * 
+ **/
+public class Pitch implements Comparable<Pitch> {
 	private Tone tone;
 	private int octave;
 
@@ -44,12 +49,21 @@ public class Pitch {
 			return true;
 		}
 		Pitch pitch = (Pitch) obj;
-		return new EqualsBuilder().appendSuper(super.equals(obj)).append(tone, pitch.getTone()).append(octave, pitch.getOctave())
-				.isEquals();
+		return new EqualsBuilder().appendSuper(super.equals(obj)).append(tone, pitch.getTone())
+				.append(octave, pitch.getOctave()).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder(17, 37).append(tone).append(octave).toHashCode();
+	}
+
+	@Override
+	public int compareTo(Pitch p) {
+		int cmp = tone.compareTo(p.getTone());
+		if (cmp == 0) {
+			return Integer.valueOf(octave).compareTo(p.getOctave());
+		}
+		return cmp;
 	}
 }

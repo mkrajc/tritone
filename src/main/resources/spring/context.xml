@@ -6,7 +6,6 @@
 
 	<import resource="instrument/context-instruments.xml" />
 	<import resource="patterns/context-patterns.xml" />
-	<import resource="render/context-render.xml" />
 
 	<context:component-scan base-package="org.mech.tritone" />
 

@@ -1,12 +1,5 @@
 package org.mech.tritone.music.service;
 
-import java.util.List;
-
-import org.mech.tritone.music.model.Pattern;
-import org.mech.tritone.music.model.Tone;
-import org.mech.tritone.music.model.instrument.string.StringedPitch;
-import org.mech.tritone.music.model.notation.fretboard.FingeredPitch;
-import org.mech.tritone.music.model.notation.fretboard.Fretboard;
 
 public interface FretboardService {
 
@@ -24,7 +17,7 @@ public interface FretboardService {
 	 *            the finger index on starting pitch
 	 * @return the list of fingered pitch
 	 */
-	List<FingeredPitch> applyFingering(Fretboard fretboard, List<StringedPitch> notesToPlay, StringedPitch start, int fingerIndex);
+//	List<FingeredPitch> applyFingering(Fretboard fretboard, List<StringedPitch> notesToPlay, StringedPitch start, int fingerIndex);
 
 	/**
 	 * Apply fingering when playing pattern, from fingered pitch
@@ -37,7 +30,7 @@ public interface FretboardService {
 	 *            the referenced
 	 * @return the list of fingered pitch
 	 */
-	List<FingeredPitch> applyFingering(Fretboard fretboard, Pattern pattern, FingeredPitch referenced);
+//	List<FingeredPitch> applyFingering(Fretboard fretboard, Pattern pattern, FingeredPitch referenced);
 
 	/**
 	 * Apply fingering when playing pattern from pitch class with givent finger
@@ -55,7 +48,7 @@ public interface FretboardService {
 	 *            the string index
 	 * @return the list of fingered pitch
 	 */
-	List<FingeredPitch> applyFingering(Fretboard fretboard, Pattern pattern, Tone tone, int fingerIndex, int stringIndex);
+//	List<FingeredPitch> applyFingering(Fretboard fretboard, Pattern pattern, Tone tone, int fingerIndex, int stringIndex);
 
 	/**
 	 * Find stringed pitchs on all fretboard of given class
@@ -66,7 +59,7 @@ public interface FretboardService {
 	 *            tone
 	 * @return the list
 	 */
-	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Tone tone);
+//	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Tone tone);
 
 	/**
 	 * Find stringed pitchs of given class on given string
@@ -79,7 +72,7 @@ public interface FretboardService {
 	 *            the string index
 	 * @return the list
 	 */
-	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Tone tone, int stringIndex);
+//	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Tone tone, int stringIndex);
 
 	/**
 	 * Find stringed pitchs on whole fretboard in given fret range
@@ -94,7 +87,7 @@ public interface FretboardService {
 	 *            the fret to
 	 * @return the list
 	 */
-	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Tone tone, int fretFrom, int fretTo);
+//	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Tone tone, int fretFrom, int fretTo);
 
 	/**
 	 * Find stringed pitchs of given pitchClass on fret range and given string
@@ -111,7 +104,7 @@ public interface FretboardService {
 	 *            the string index
 	 * @return the list
 	 */
-	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Tone tone, int fretFrom, int fretTo, int stringIndex);
+//	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Tone tone, int fretFrom, int fretTo, int stringIndex);
 
 	/**
 	 * Finds all stringed pitchs from pattern on fretboard from referenced
@@ -125,7 +118,7 @@ public interface FretboardService {
 	 *            the pitch class
 	 * @return the list
 	 */
-	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Pattern pattern, Tone referenceTone);
+//	CList<StringedPitch> findStringedPitchs(Fretboard fretboard, Pattern pattern, Tone referenceTone);
 
 	/**
 	 * Find stringed pitchs from pattern on fretboard on fret range from
@@ -134,7 +127,7 @@ public interface FretboardService {
 	 * @param fretboard
 	 *            the fretboard
 	 * @param pattern
-	 *            the pattern
+	 *            the patternW
 	 * @param referencePitchClass
 	 *            the reference pitch class
 	 * @param fretFrom
@@ -143,6 +136,6 @@ public interface FretboardService {
 	 *            the fret to
 	 * @return the list
 	 */
-	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Pattern pattern, Tone referenceTone, int fretFrom, int fretTo);
+//	List<StringedPitch> findStringedPitchs(Fretboard fretboard, Pattern pattern, Tone referenceTone, int fretFrom, int fretTo);
 
 }

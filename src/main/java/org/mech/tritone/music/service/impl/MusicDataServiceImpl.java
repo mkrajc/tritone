@@ -11,7 +11,7 @@ import org.mech.tritone.music.model.ChordPattern;
 import org.mech.tritone.music.model.Pattern;
 import org.mech.tritone.music.model.PatternType;
 import org.mech.tritone.music.model.ScalePattern;
-import org.mech.tritone.music.model.instrument.Tuning;
+import org.mech.tritone.music.model.instrument.string.Tuning;
 import org.mech.tritone.music.service.MusicDataService;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

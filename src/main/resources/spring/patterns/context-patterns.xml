@@ -5,6 +5,6 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<import resource="context-chords.xml" />
-	<import resource="context-scales.xml" />
+<!-- 	<import resource="context-scales.xml" /> -->
 
 </beans>

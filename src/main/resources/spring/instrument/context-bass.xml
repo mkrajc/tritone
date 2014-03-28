@@ -6,12 +6,11 @@
 	
 	<bean id="instrumentBass" class="org.mech.tritone.music.model.instrument.string.StringedInstrument">
 		<property name="name" value="bass guitar" />
-		<property name="stringsCount" value="4" />
 		<property name="tuning" ref="tuningBass4" />
-		<property name="pitchRange" value="22" />
+		<property name="length" value="22" />
 	</bean>
 
-	<bean id="tuningBass4" class="org.mech.tritone.music.model.instrument.Tuning">
+	<bean id="tuningBass4" class="org.mech.tritone.music.model.instrument.string.Tuning">
 		<property name="key" value="bass"/>
 		<property name="name" value="standard bass tuning"/>
 		<property name="tuning">
@@ -24,7 +23,7 @@
 		</property>
 	</bean>
 	
-	<bean id="tuningBass5" class="org.mech.tritone.music.model.instrument.Tuning">
+	<bean id="tuningBass5" class="org.mech.tritone.music.model.instrument.string.Tuning">
 		<property name="key" value="bass5"/>
 		<property name="name" value="standard 5 string bass tuning"/>
 		<property name="tuning">
@@ -38,7 +37,7 @@
 		</property>
 	</bean>
 
-	<bean id="tuningBass5highC" class="org.mech.tritone.music.model.instrument.Tuning">
+	<bean id="tuningBass5highC" class="org.mech.tritone.music.model.instrument.string.Tuning">
 		<property name="key" value="bassC"/>
 		<property name="name" value="5 string bass with high C tuning"/>
 		<property name="tuning">
@@ -52,7 +51,7 @@
 		</property>
 	</bean>
 
-	<bean id="tuningBass6" class="org.mech.tritone.music.model.instrument.Tuning">
+	<bean id="tuningBass6" class="org.mech.tritone.music.model.instrument.string.Tuning">
 		<property name="key" value="bass6"/>
 		<property name="name" value="standard 6 string bass tuning"/>
 		<property name="tuning">

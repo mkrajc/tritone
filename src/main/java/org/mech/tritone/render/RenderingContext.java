@@ -1,11 +1,11 @@
 package org.mech.tritone.render;
 
-import java.io.Writer;
+import org.mech.tritone.music.context.impl.ContextImpl;
 
-import org.mech.tritone.music.context.Context;
-
-public interface RenderingContext extends Context {
+public class RenderingContext extends ContextImpl {
 	
-	Writer getWriter();
-
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 }

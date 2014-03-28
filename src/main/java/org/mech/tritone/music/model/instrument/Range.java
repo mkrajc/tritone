@@ -2,6 +2,9 @@ package org.mech.tritone.music.model.instrument;
 
 import org.mech.tritone.music.model.Pitch;
 
+/**
+ * Range from one pitch to another
+ */
 public class Range {
 
 	private Pitch from;

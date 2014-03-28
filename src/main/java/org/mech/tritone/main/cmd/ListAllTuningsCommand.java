@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.mech.tritone.music.model.Pitch;
-import org.mech.tritone.music.model.instrument.Tuning;
+import org.mech.tritone.music.model.instrument.string.Tuning;
 import org.mech.tritone.music.service.MusicDataService;
 import org.mech.tritone.music.utils.PitchUtils;
 import org.springframework.beans.factory.annotation.Autowired;

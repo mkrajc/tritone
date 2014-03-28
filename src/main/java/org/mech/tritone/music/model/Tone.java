@@ -2,17 +2,35 @@ package org.mech.tritone.music.model;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * Tone enumaration, has collection of all tones in octave, distinguishing
+ * between enharmonic ones. So Cb and B are different, although it has same tone
+ * class but different tone group.
+ * 
+ **/
 public enum Tone {
-	C(0), DB(1), CS(1), D(2), EB(3), DS(3), E(4), F(5), GB(6), FS(6), G(7), AB(8), GS(8), A(9), BB(10), AS(10), B(11), CB(11);
+	C(0, ToneGroup.C), CS(1, ToneGroup.C), DB(1, ToneGroup.D), D(2, ToneGroup.D), DS(3, ToneGroup.D), EB(3, ToneGroup.E), E(
+			4, ToneGroup.E), ES(5, ToneGroup.E), FB(4, ToneGroup.F), F(5, ToneGroup.F), FS(6, ToneGroup.F), GB(6,
+			ToneGroup.G), G(7, ToneGroup.G), GS(8, ToneGroup.G), AB(8, ToneGroup.A), A(9, ToneGroup.A), AS(10,
+			ToneGroup.A), BB(10, ToneGroup.B), B(11, ToneGroup.B), BS(0, ToneGroup.B), CB(11, ToneGroup.C);
 
+	// tone class Db and Cs has same tone class;
 	private int tClass;
 
-	private Tone(final int tClass) {
+	// group represent same tone group C, C#, Cb has same C group 0
+	private ToneGroup group;
+
+	private Tone(final int tClass, ToneGroup group) {
 		this.tClass = tClass;
+		this.group = group;
 	}
 
 	public int getToneClass() {
 		return tClass;
+	}
+
+	public ToneGroup getToneGroup() {
+		return group;
 	}
 
 	public String format() {
@@ -22,6 +40,15 @@ public enum Tone {
 	public static Tone fromToneClass(final int toneClass) {
 		for (Tone t : values()) {
 			if (t.getToneClass() == toneClass) {
+				return t;
+			}
+		}
+		throw new IllegalArgumentException();
+	}
+
+	public static Tone fromToneClass(final int toneClass, ToneGroup group) {
+		for (Tone t : values()) {
+			if (t.getToneClass() == toneClass && t.getToneGroup() == group) {
 				return t;
 			}
 		}

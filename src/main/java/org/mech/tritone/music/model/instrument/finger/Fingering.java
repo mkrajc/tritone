@@ -1,4 +1,4 @@
-package org.mech.tritone.music.model.notation.fretboard;
+package org.mech.tritone.music.model.instrument.finger;
 
 public class Fingering {
 

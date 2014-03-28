@@ -1,8 +1,13 @@
 package org.mech.tritone.render;
 
+import java.io.PrintWriter;
+
+
 public interface Renderer<T extends RenderingContext> {
 
-	T render(T context);
-	
-	boolean supports(T context);
+	void render(PrintWriter writer, T context);
+
+	Format getSupportedFormat();
+
+	boolean supports(RenderingContext context, Format format);
 }

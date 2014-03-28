@@ -1,5 +1,6 @@
 package org.mech.tritone.music.render.html;
 
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,45 +8,46 @@ import java.util.List;
 import java.util.Map;
 
 import org.mech.tritone.music.context.MusicRenderingContext;
+import org.mech.tritone.music.context.impl.MusicRenderingContextImpl;
+import org.mech.tritone.music.model.Pitch;
 import org.mech.tritone.music.model.Tone;
+import org.mech.tritone.music.model.instrument.finger.FingeredPitch;
+import org.mech.tritone.music.model.instrument.string.StringedInstrument;
 import org.mech.tritone.music.model.instrument.string.StringedPitch;
-import org.mech.tritone.music.model.instrument.string.Strings;
-import org.mech.tritone.music.model.notation.fretboard.FingeredPitch;
-import org.mech.tritone.music.model.notation.fretboard.Fretboard;
+import org.mech.tritone.render.Format;
+import org.mech.tritone.render.RenderingContext;
 import org.mech.tritone.render.html.AbstractHtmlRenderer;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.googlecode.jatl.Html;
 
-@Component("rendererFretboard")
-public class FretboardHtmlRenderer extends AbstractHtmlRenderer<MusicRenderingContext> {
+//@Component("rendererFretboard")
+public class FretboardHtmlRenderer extends AbstractHtmlRenderer<MusicRenderingContextImpl> {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MusicRenderingContext renderHtml(final MusicRenderingContext context) {
-		Fretboard fretboard;
+	public MusicRenderingContextImpl renderHtml(final MusicRenderingContextImpl context) {
 		int from, to;
 		boolean displayStrings;
 		List objects;
 		String caption;
 
-		fretboard = context.get(MusicRenderingContext.FRETBOARD, Fretboard.class);
+		final StringedInstrument instrument = context.get(MusicRenderingContext.FRETBOARD, StringedInstrument.class);
 
-		if (fretboard == null) {
+		if (instrument == null) {
 			throw new IllegalArgumentException("fretboard is not in the context");
 		}
 
 		from = context.get(MusicRenderingContext.PRM_FRET_FROM, Integer.class, 0);
-		to = context.get(MusicRenderingContext.PRM_FRET_TO, Integer.class, fretboard.getLength());
+		to = context.get(MusicRenderingContext.PRM_FRET_TO, Integer.class, instrument.getLength());
 		displayStrings = context.get(MusicRenderingContext.PRM_FRET_DISPLAY_STRINGS, Boolean.class, true);
 		objects = context.get(MusicRenderingContext.FRETBOARD_RENDERS, List.class);
-		Tone root = context.get(MusicRenderingContext.PRM_ROOT, Tone.class);
+		final Tone root = context.get(MusicRenderingContext.PRM_ROOT, Tone.class);
 		caption = context.get(MusicRenderingContext.FRETBOARD_CAPTION, String.class);
 
 		final Map<Integer, Map<Integer, List>> renders = prepareRenders(objects);
 
-		createFretboardHtml(context.getWriter(), fretboard, from, to, displayStrings, renders, root, caption);
+		createFretboardHtml(null, instrument, from, to, displayStrings, renders, root, caption);
 
 		return context;
 
@@ -53,13 +55,13 @@ public class FretboardHtmlRenderer extends AbstractHtmlRenderer<MusicRenderingCo
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Map<Integer, Map<Integer, List>> prepareRenders(final List objects) {
-		Map<Integer, Map<Integer, List>> map = new HashMap<Integer, Map<Integer, List>>();
+		final Map<Integer, Map<Integer, List>> map = new HashMap<Integer, Map<Integer, List>>();
 
 		if (!CollectionUtils.isEmpty(objects)) {
-			for (Object object : objects) {
+			for (final Object object : objects) {
 				Integer string = null, fret = null;
 				if (StringedPitch.class.isInstance(object)) {
-					StringedPitch pitch = (StringedPitch) object;
+					final StringedPitch pitch = (StringedPitch) object;
 					string = pitch.getStringIndex();
 					fret = pitch.getPosition();
 				}
@@ -83,7 +85,7 @@ public class FretboardHtmlRenderer extends AbstractHtmlRenderer<MusicRenderingCo
 		return map;
 	}
 
-	protected void createFretboardHtml(final Writer writer, final Fretboard fretboard, final int fromFret, final int toFret,
+	protected void createFretboardHtml(final Writer writer, final StringedInstrument fretboard, final int fromFret, final int toFret,
 			final boolean displayStrings, @SuppressWarnings("rawtypes") final Map<Integer, Map<Integer, List>> renders, final Tone root,
 			final String caption) {
 
@@ -104,8 +106,8 @@ public class FretboardHtmlRenderer extends AbstractHtmlRenderer<MusicRenderingCo
 		}
 		html.end();
 
-		for (int x = fretboard.getStringCount() - 1; x >= 0; x--) {
-			Strings strng = fretboard.getStrings(x);
+		for (int x = fretboard.getStringsCount() - 1; x >= 0; x--) {
+			final Pitch strng = fretboard.getTuning().get(x);
 
 			html.tr();
 			for (int i = fromFret; i < toFret; i++) {
@@ -118,18 +120,18 @@ public class FretboardHtmlRenderer extends AbstractHtmlRenderer<MusicRenderingCo
 				html.td().attr("class", clazz);
 
 				if (renders.containsKey(x) && renders.get(x).containsKey(i)) {
-					for (Object o : renders.get(x).get(i)) {
+					for (final Object o : renders.get(x).get(i)) {
 						if (FingeredPitch.class.isInstance(o)) {
-							FingeredPitch pitch = (FingeredPitch) o;
+							final FingeredPitch pitch = (FingeredPitch) o;
 							html.div();
 							if (pitch.getPitch().getTone() == root) {
 								html.attr("class", "fretroot");
 							} else {
 								html.attr("class", "fretpitch");
 							}
-							html.text(Integer.toString(pitch.getFingerIndex()) + " " + pitch.getPitch().getTone()).end();
+							html.text(Integer.toString(pitch.getFinger().ordinal()) + " " + pitch.getPitch().getTone()).end();
 						} else if (StringedPitch.class.isInstance(o)) {
-							StringedPitch pitch = (StringedPitch) o;
+							final StringedPitch pitch = (StringedPitch) o;
 							html.div();
 							if (pitch.getPitch().getTone() == root) {
 								html.attr("class", "fretroot");
@@ -141,7 +143,7 @@ public class FretboardHtmlRenderer extends AbstractHtmlRenderer<MusicRenderingCo
 					}
 				} else if (i == 0 && displayStrings) {
 					html.div();
-					html.text(strng.getRoot().getTone().format()).end();
+					html.text(strng.getTone().format()).end();
 				}
 
 				html.end();
@@ -152,8 +154,22 @@ public class FretboardHtmlRenderer extends AbstractHtmlRenderer<MusicRenderingCo
 	}
 
 	@Override
-	public boolean supports(final MusicRenderingContext context) {
-		return context.get(MusicRenderingContext.FRETBOARD, Fretboard.class) != null;
+	public void render(final PrintWriter writer, final MusicRenderingContextImpl context) {
+		// TODO Auto-generated method stub
+		
 	}
+
+	@Override
+	public Format getSupportedFormat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean supports(final RenderingContext context, final Format format) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.mech.tritone.music.context.MusicRenderingContext;
 import org.mech.tritone.music.model.Tone;
-import org.mech.tritone.music.model.notation.fretboard.Fretboard;
-import org.mech.tritone.render.RenderingContextImpl;
+import org.mech.tritone.music.model.instrument.string.StringedInstrument;
+import org.mech.tritone.render.RenderingContext;
 
-public class MusicRenderingContextImpl extends RenderingContextImpl implements MusicRenderingContext {
+public class MusicRenderingContextImpl extends RenderingContext implements MusicRenderingContext {
 
-	public void setFretboard(final Fretboard fretboard) {
+	public void setFretboard(final StringedInstrument fretboard) {
 		super.put(MusicRenderingContext.FRETBOARD, fretboard);
 	}
 

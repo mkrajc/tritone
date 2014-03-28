@@ -21,6 +21,9 @@ public interface Arguments {
 
 	public static final String TUNING = "t";
 	public static final String TUNING_LONG = "tuning";
+	
+	public static final String FRET = "f";
+	public static final String FRET_LONG = "fret";
 
 	public static final String PATTERN = "p";
 	public static final String PATTERN_LONG = "pattern";

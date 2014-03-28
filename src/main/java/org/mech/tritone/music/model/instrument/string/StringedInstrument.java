@@ -1,23 +1,16 @@
 package org.mech.tritone.music.model.instrument.string;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.mech.tritone.music.model.Pitch;
-import org.mech.tritone.music.model.instrument.HasStrings;
 import org.mech.tritone.music.model.instrument.Instrument;
 import org.mech.tritone.music.model.instrument.Range;
-import org.mech.tritone.music.model.instrument.Tuning;
 import org.mech.tritone.music.utils.PitchUtils;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * <p>
- * The StringInstrument.
+ * The StringInstrument represent string music instrument (guitar, violin,
+ * ukulele...)
  * </p>
  * <p>
  * Date: 8.2.2012 13:25:38
@@ -27,26 +20,15 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class StringedInstrument implements Instrument, HasStrings {
 
-	private int stringsCount;
 	private Tuning tuning;
-	private List<Strings> strings;
+	/**
+	 * The pitch range length. How many pitches can be played on one string
+	 **/
+	private int length;
+	private String name;
 	private Range range;
 
-	/**
-	 * The pitch range. How many pitches can be played on one string
-	 **/
-	private int pitchRange;
-
-	private String name;
-
-	public StringedInstrument() {
-		range = new Range();
-	}
-
-	public int getStringsCount() {
-		return stringsCount;
-	}
-
+	@Override
 	public Tuning getTuning() {
 		return tuning;
 	}
@@ -55,71 +37,51 @@ public class StringedInstrument implements Instrument, HasStrings {
 		this.tuning = tuning;
 	}
 
-	public Range getRange() {
-		return range;
-	}
-
-	public void setRange(final Range range) {
-		this.range = range;
-	}
-
-	public void setRangeFrom(final String from) {
-		range.setFrom(PitchUtils.toPitch(from));
-	}
-
-	public void setRangeTo(final String to) {
-		range.setTo(PitchUtils.toPitch(to));
-	}
-
 	@Override
 	public String toString() {
-		ToStringBuilder builder = new ToStringBuilder(this,
-				ToStringStyle.SIMPLE_STYLE);
+		final ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 		builder.append(name);
 		builder.append(tuning);
-		builder.append(range);
+		builder.append(length);
 		return builder.toString();
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public void setStringsCount(int stringsCount) {
-		this.stringsCount = stringsCount;
-	}
-
-	public int getPitchRange() {
-		return pitchRange;
-	}
-
-	public void setPitchRange(int pitchRange) {
-		this.pitchRange = pitchRange;
-	}
-
-	@PostConstruct
-	public void setup() {
-		if (strings == null && tuning != null) {
-			strings = new ArrayList<Strings>();
-			for (int i = 0; i < stringsCount; i++) {
-				strings.add(new Strings(tuning.get(i), pitchRange, i));
-			}
-		}
-		if (pitchRange > 0 && (range.from() == null || range.to() == null)) {
-			range.setFrom(tuning.get(0));
-			Pitch pitchTo = tuning.get(tuning.get().size() - 1);
-			range.setTo(PitchUtils.aug(pitchTo, pitchRange));
-		}
-
+	@Override
+	public int getStringsCount() {
+		return tuning.size();
 	}
 
 	@Override
-	public Strings getStrings(int index) {
-		return strings.get(index);
+	public Pitch getNaturalStringPitch(final int stringIndex) {
+		return tuning.get(stringIndex);
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(final int length) {
+		this.length = length;
+	}
+
+	@Override
+	public Range getRange() {
+		if (range == null) {
+			range = new Range();
+			range.setFrom(tuning.getRange().from());
+			final Pitch lastPitch = PitchUtils.aug(tuning.getRange().to(), length);
+			range.setTo(lastPitch);
+		}
+		return range;
 	}
 
 }

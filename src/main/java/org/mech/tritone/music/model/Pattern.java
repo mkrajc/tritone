@@ -4,18 +4,22 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.mech.tritone.music.utils.IntervalUtils;
 
+/**
+ * Pattern is set of intervals with some name and key. Can be used to identify
+ * chords, scales.
+ */
 public abstract class Pattern {
-	private Integer[] patterns;
+	private int[] intervals;
 	private String name;
 	private String abbrv;
 	private String key;
 
-	public Integer get(final int position) {
-		return patterns[position];
+	public int get(final int position) {
+		return intervals[position];
 	}
 
-	public Integer length() {
-		return patterns.length;
+	public int length() {
+		return intervals.length;
 	}
 
 	public String getName() {
@@ -28,23 +32,27 @@ public abstract class Pattern {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-				.append(name).append(patterns).append(abbrv).toString();
+		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(name).append(intervals).append(abbrv)
+				.toString();
 	}
 
-	public Integer[] getPatterns() {
-		return patterns;
+	public int[] getIntervals() {
+		return intervals;
 	}
 
-	public void setPatterns(final Integer[] patterns) {
-		this.patterns = patterns;
+	public void setIntervals(final int[] intervals) {
+		this.intervals = intervals;
 	}
 
-	public void setIntervals(final String[] intervals) {
-		this.patterns = new Integer[intervals.length];
-		for (int i = 0; i < intervals.length; i++) {
-			patterns[i] = IntervalUtils.toInterval(intervals[i])
-					.getPitchDistance();
+	public void setIntervalsString(final String[] intervalStrings) {
+		this.intervals = new int[intervalStrings.length];
+		for (int i = 0; i < intervalStrings.length; i++) {
+			final String intervalString = intervalStrings[i];
+			try {
+				intervals[i] = IntervalUtils.toInterval(intervalString).getDistance();
+			} catch (final IllegalArgumentException exception) {
+				throw new IllegalArgumentException("Unknown interval " + intervalString);
+			}
 		}
 	}
 
@@ -62,7 +70,7 @@ public abstract class Pattern {
 		return key;
 	}
 
-	public void setKey(String key) {
+	public void setKey(final String key) {
 		this.key = key;
 	}
 }

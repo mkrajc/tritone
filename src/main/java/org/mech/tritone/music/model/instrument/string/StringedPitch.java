@@ -42,25 +42,19 @@ public class StringedPitch implements Comparable<StringedPitch> {
 
 	@Override
 	public String toString() {
-		ToStringBuilder builder = new ToStringBuilder(this,
-				ToStringStyle.SIMPLE_STYLE);
+		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 		builder.append(pitch);
 		builder.append(stringIndex);
 		builder.append(position);
 		return builder.toString();
 	}
-	
-	
 
 	@Override
 	public int compareTo(StringedPitch sPitch) {
-		int sIndexCompare = stringIndex < sPitch.getStringIndex() ? -1
-				: (stringIndex == sPitch.getStringIndex() ? 0 : 1);
+		int sIndexCompare = Integer.valueOf(stringIndex).compareTo(sPitch.getStringIndex());
 		if (sIndexCompare == 0) {
-			return position < sPitch.getPosition() ? -1 : (position == sPitch
-					.getPosition() ? 0 : 1);
+			return Integer.valueOf(position).compareTo(sPitch.getPosition());
 		}
-
 		return sIndexCompare;
 	}
 }

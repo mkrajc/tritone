@@ -7,21 +7,21 @@
 	<!-- major -->
 	<bean id="patternChordMajor" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Major Chord" />
-		<property name="intervals" value="1,3,5" />
+		<property name="intervalsString" value="1,3,5" />
 		<property name="abbrv" value="" />
 		<property name="key" value="major" />
 	</bean>
 
 	<bean id="patternChordMajor7" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Major 7th Chord"></property>
-		<property name="intervals" value="1,3,5,7" />
+		<property name="intervalsString" value="1,3,5,7" />
 		<property name="abbrv" value="maj7" />
 		<property name="key" value="major7" />
 	</bean>
 
 	<bean id="patternChordMajor9" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Major 9th Chord"></property>
-		<property name="intervals" value="1,3,5,7,9" />
+		<property name="intervalsString" value="1,3,5,7,9" />
 		<property name="abbrv" value="maj9" />
 		<property name="key" value="major9" />
 	</bean>
@@ -29,49 +29,49 @@
 	<!-- minor -->
 	<bean id="patternChordMinor" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Minor Chord"></property>
-		<property name="intervals" value="1,b3,5" />
+		<property name="intervalsString" value="1,b3,5" />
 		<property name="abbrv" value="m" />
 		<property name="key" value="minor" />
 	</bean>
 	
 	<bean id="patternChordMinor7" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Minor 7th Chord"></property>
-		<property name="intervals" value="1,b3,5,b7" />
+		<property name="intervalsString" value="1,b3,5,b7" />
 		<property name="abbrv" value="m7" />
 		<property name="key" value="minor7" />
 	</bean>
 
 	<bean id="patternChordMinor6" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Minor 6th Chord"></property>
-		<property name="intervals" value="1,b3,5,6" />
+		<property name="intervalsString" value="1,b3,5,6" />
 		<property name="abbrv" value="m6" />
 		<property name="key" value="minor6" />
 	</bean>
 	
 	<bean id="patternChordMinMaj7" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Minor Major 7th Chord"></property>
-		<property name="intervals" value="1,b3,5,7" />
+		<property name="intervalsString" value="1,b3,5,7" />
 		<property name="abbrv" value="mMaj7" />
 		<property name="key" value="minMaj7" />
 	</bean>
 
 	<bean id="patternChordMinor7b5" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Half Diminished 7b5 Chord"></property>
-		<property name="intervals" value="1,b3,b5,b7" />
+		<property name="intervalsString" value="1,b3,b5,b7" />
 		<property name="abbrv" value="m7b5" />
 		<property name="key" value="minor7b5" />
 	</bean>
 
 	<bean id="patternChordMinor9" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Minor 9th Chord"></property>
-		<property name="intervals" value="1,b3,5,b7,9" />
+		<property name="intervalsString" value="1,b3,5,b7,9" />
 		<property name="abbrv" value="m9" />
 		<property name="key" value="minor9" />
 	</bean>
 	
 	<bean id="patternChordMinor11" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Minor 11th Chord"></property>
-		<property name="intervals" value="1,b3,5,b7,9,11" />
+		<property name="intervalsString" value="1,b3,5,b7,9,11" />
 		<property name="abbrv" value="m11" />
 		<property name="key" value="minor11" />
 	</bean>
@@ -79,14 +79,14 @@
 	<!-- dim -->
 	<bean id="patternChordDim" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Diminished Chord"></property>
-		<property name="intervals" value="1,b3,b5" />
+		<property name="intervalsString" value="1,b3,b5" />
 		<property name="abbrv" value="dim" />
 		<property name="key" value="dim" />
 	</bean>
 
 	<bean id="patternChordDim7" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Diminished 7th Chord"></property>
-		<property name="intervals" value="1,b3,b5,bb7" />
+		<property name="intervalsString" value="1,b3,b5,bb7" />
 		<property name="abbrv" value="dim7" />
 		<property name="key" value="dim7" />
 	</bean>
@@ -94,14 +94,14 @@
 	<!-- aug -->
 	<bean id="patternChordAug" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Augumented Chord"></property>
-		<property name="intervals" value="1,b3,aug5" />
+		<property name="intervalsString" value="1,b3,aug5" />
 		<property name="abbrv" value="aug" />
 		<property name="key" value="aug" />
 	</bean>
 	
 	<bean id="patternChordAug7" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Augumented Chord"></property>
-		<property name="intervals" value="1,b3,aug5,b7" />
+		<property name="intervalsString" value="1,b3,aug5,b7" />
 		<property name="abbrv" value="aug7" />
 		<property name="key" value="aug7" />
 	</bean>
@@ -109,28 +109,28 @@
 	<!-- dominant -->
 	<bean id="patternChordDominant7" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Dominant 7th Chord"></property>
-		<property name="intervals" value="1,3,5,b7" />
+		<property name="intervalsString" value="1,3,5,b7" />
 		<property name="abbrv" value="7" />
 		<property name="key" value="dom7" />
 	</bean>
 
 	<bean id="patternChordDominant7b5" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Dominant 7b5 Chord"></property>
-		<property name="intervals" value="1,3,b5,b7" />
+		<property name="intervalsString" value="1,3,b5,b7" />
 		<property name="abbrv" value="7b5" />
 		<property name="key" value="dom7b5" />
 	</bean>
 
 	<bean id="patternChordDominant7b9" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Dominant 7b9 Chord"></property>
-		<property name="intervals" value="1,3,5,b7,b9" />
+		<property name="intervalsString" value="1,3,5,b7,b9" />
 		<property name="abbrv" value="7b9" />
 		<property name="key" value="dom7b9" />
 	</bean>
 
 	<bean id="patternChordDominant7aug5" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Dominant 7#5 Chord"></property>
-		<property name="intervals" value="1,3,aug5,b7" />
+		<property name="intervalsString" value="1,3,aug5,b7" />
 		<property name="abbrv" value="7#5" />
 		<property name="key" value="dom7#5" />
 	</bean>
@@ -139,14 +139,14 @@
 	<!-- sus -->
 	<bean id="patternChordSus2" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Suspended 2th Chord"></property>
-		<property name="intervals" value="1,2,5" />
+		<property name="intervalsString" value="1,2,5" />
 		<property name="abbrv" value="sus2" />
 		<property name="key" value="sus2" />
 	</bean>
 
 	<bean id="patternChordSus4" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Suspended 4th Chord"></property>
-		<property name="intervals" value="1,4,5" />
+		<property name="intervalsString" value="1,4,5" />
 		<property name="abbrv" value="sus4" />
 		<property name="key" value="sus4" />
 	</bean>
@@ -154,21 +154,21 @@
 	<!-- add -->
 	<bean id="patternChordAdd6" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Addition 6th Chord"></property>
-		<property name="intervals" value="1,3,5,6" />
+		<property name="intervalsString" value="1,3,5,6" />
 		<property name="abbrv" value="add6" />
 		<property name="key" value="add6" />
 	</bean>
 
 	<bean id="patternChordAdd9" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Addition 9th Chord"></property>
-		<property name="intervals" value="1,3,5,9" />
+		<property name="intervalsString" value="1,3,5,9" />
 		<property name="abbrv" value="add9" />
 		<property name="key" value="add9" />
 	</bean>
 
 	<bean id="patternChord6add9" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Addition 6/9th Chord"></property>
-		<property name="intervals" value="1,3,5,6,9" />
+		<property name="intervalsString" value="1,3,5,6,9" />
 		<property name="abbrv" value="6add9" />
 		<property name="key" value="add69" />
 	</bean>

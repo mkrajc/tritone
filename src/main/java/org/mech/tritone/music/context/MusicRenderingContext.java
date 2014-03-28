@@ -1,8 +1,7 @@
 package org.mech.tritone.music.context;
 
-import org.mech.tritone.render.RenderingContext;
 
-public interface MusicRenderingContext extends RenderingContext {
+public interface MusicRenderingContext extends Context {
 	public final static String FRETBOARD = "fretboard";
 	public final static String FRETBOARD_CAPTION = "fretboardCaption";
 	public final static String FRETBOARD_RENDERS = "fretRenders";
@@ -17,6 +16,7 @@ public interface MusicRenderingContext extends RenderingContext {
 	
 	public static final String HTML_PATH = "htmlPath";
 	
+	@Override
 	<T> T get(String key, Class<T> clazz);
 	
 	

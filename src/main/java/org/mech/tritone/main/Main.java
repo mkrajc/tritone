@@ -1,10 +1,8 @@
 package org.mech.tritone.main;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -19,9 +17,11 @@ import org.mech.tritone.main.cmd.ListAllScalesCommand;
 import org.mech.tritone.main.cmd.ListAllTonesCommand;
 import org.mech.tritone.main.cmd.ListAllTuningsCommand;
 import org.mech.tritone.main.cmd.RenderCommand;
+import org.mech.tritone.main.cmd.render.RenderAllNotesOnStringCommand;
 import org.mech.tritone.music.model.Pattern;
 import org.mech.tritone.music.model.Tone;
-import org.mech.tritone.music.model.instrument.Tuning;
+import org.mech.tritone.music.model.TonePattern;
+import org.mech.tritone.music.model.instrument.string.Tuning;
 import org.mech.tritone.music.service.MusicDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -34,6 +34,7 @@ public class Main {
 	private static final String DEFAULT_TUNING = "guitar";
 	private static final String DEFAULT_PATTERN = "major";
 	private static final String DEFAULT_TONE = "C";
+	private static final String DEFAULT_FRET_LENGTH = "21";
 
 	@Autowired
 	private ListAllChordsCommand listAllChordsCommand;
@@ -49,6 +50,9 @@ public class Main {
 
 	@Autowired
 	private RenderCommand renderCommand;
+
+	@Autowired
+	private RenderAllNotesOnStringCommand renderAllNotesOnStringCommand;
 
 	@Autowired
 	private MusicDataService dataService;
@@ -84,27 +88,28 @@ public class Main {
 				System.exit(0);
 			}
 
-			renderCommand.execute(prepareWriter(line), preparePattern(line), prepareTuning(line), prepareTone(line));
+			renderAllNotesOnStringCommand.execute(prepareWriter(line), new TonePattern(preparePattern(line),
+					prepareTone(line)), prepareTuning(line), prepareFretLength(line));
 			System.exit(0);
 
-		} catch (ParseException exp) {
+		} catch (final ParseException exp) {
 			System.err.println("Parsing failed.  Reason: " + exp.getMessage());
 			System.exit(1);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			System.err.println("IO exception.  Reason: " + e.getMessage());
 			System.exit(1);
 		}
 	}
 
-	private Writer prepareWriter(final CommandLine commandLine) throws IOException {
+	private PrintWriter prepareWriter(final CommandLine commandLine) throws IOException {
 		final String path = commandLine.getOptionValue(Arguments.FILE_PATH);
 
 		if (path != null) {
-			File file = new File(path);
+			final File file = new File(path);
 			if (!file.exists()) {
 				file.createNewFile();
 			}
-			return new FileWriter(file);
+			return new PrintWriter(file);
 		}
 		return new PrintWriter(System.out);
 	}
@@ -115,7 +120,8 @@ public class Main {
 		final Tuning tuning = dataService.getTuning(tuningValue);
 
 		if (tuning == null) {
-			throw new ParseException(String.format("Tuning '%s' is not valid. Please select one, for all tunings use -%s", tuningValue,
+			throw new ParseException(String.format(
+					"Tuning '%s' is not valid. Please select one, for all tunings use -%s", tuningValue,
 					Arguments.LIST_TUNING));
 		}
 		return tuning;
@@ -138,20 +144,30 @@ public class Main {
 		final String toneValue = commandLine.getOptionValue(Arguments.TONE, DEFAULT_TONE);
 		try {
 			return Tone.valueOf(toneValue.toUpperCase());
-		} catch (IllegalArgumentException ex) {
-			throw new ParseException(String.format("Tone '%s' is not valid. Please select one, for all tones use -%s", toneValue,
-					Arguments.LIST_TONE));
+		} catch (final IllegalArgumentException ex) {
+			throw new ParseException(String.format("Tone '%s' is not valid. Please select one, for all tones use -%s",
+					toneValue, Arguments.LIST_TONE));
+		}
+	}
+
+	private int prepareFretLength(final CommandLine commandLine) throws ParseException {
+		final String fretLengthValue = commandLine.getOptionValue(Arguments.FRET, DEFAULT_FRET_LENGTH);
+		try {
+			return Integer.valueOf(fretLengthValue);
+		} catch (final NumberFormatException ex) {
+			throw new ParseException(String.format("Fret length '%s' is not valid. Please provide number.",
+					fretLengthValue));
 		}
 	}
 
 	private void help(final Options options) {
-		HelpFormatter formatter = new HelpFormatter();
+		final HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp("tritone", options);
 		System.exit(0);
 	}
 
 	public static void main(final String[] args) throws Exception {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/context.xml");
+		final ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/context.xml");
 
 		final Main main = (Main) applicationContext.getBean("Main");
 		main.process(args);

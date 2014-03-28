@@ -7,7 +7,6 @@ import java.io.Writer;
 import org.apache.commons.io.IOUtils;
 import org.mech.tritone.render.RendererDispatcher;
 import org.mech.tritone.render.RenderingContext;
-import org.mech.tritone.render.RenderingContextDispatcher;
 
 import com.googlecode.jatl.Html;
 
@@ -16,11 +15,11 @@ public class HtmlRendererEngine {
 	private RendererDispatcher dispatcher;
 
 	public void render(final Writer writer, final RenderingContext context) {
-		RenderingContext renderHtmlContext = context;
+		final RenderingContext renderHtmlContext = context;
 
 		try {
 			// start building html
-			final Html html = new Html(context.getWriter());
+			final Html html = new Html(writer);
 			html.head();
 			html.style().attr("type", "text/css").text(css()).end();
 			html.end();
@@ -28,27 +27,26 @@ public class HtmlRendererEngine {
 			//
 			// render content
 			//
-			if (RenderingContextDispatcher.class.isInstance(context)) {
-				for (RenderingContext mContext : ((RenderingContextDispatcher) context).getContexts()) {
+			/*if (RenderingContextDispatcher.class.isInstance(context)) {
+				for (final RenderingContext mContext : ((RenderingContextDispatcher) context).getContexts()) {
 					dispatcher.dispatchRender(mContext);
 				}
 			} else {
 				renderHtmlContext = dispatcher.dispatchRender(context);
-			}
+			}*/
 
 			// close all
 			html.endAll();
 			html.done();
 
-			writer.write(renderHtmlContext.getWriter().toString());
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
 	protected String css() throws IOException {
-		StringWriter writer = new StringWriter();
+		final StringWriter writer = new StringWriter();
 		IOUtils.copy(getClass().getResourceAsStream("/html/tritone.css"), writer, "utf-8");
 		return writer.toString();
 	}

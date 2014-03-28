@@ -5,7 +5,7 @@ import java.util.List;
 import org.mech.tritone.music.model.ChordPattern;
 import org.mech.tritone.music.model.Pattern;
 import org.mech.tritone.music.model.ScalePattern;
-import org.mech.tritone.music.model.instrument.Tuning;
+import org.mech.tritone.music.model.instrument.string.Tuning;
 
 public interface MusicDataService {
 

@@ -1,30 +1,53 @@
 package org.mech.tritone.render;
 
-import java.util.List;
+import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.Map;
 
-public class RendererDispatcher {
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
-	private List<Renderer<?>> renderers;
+@Component
+public class RendererDispatcher implements ApplicationContextAware {
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public RenderingContext dispatchRender(RenderingContext context) {
-		for (Renderer renderer : renderers) {
-			if (renderer.supports(context)) {
-				renderer.render(context);
+	private Collection<Renderer<RenderingContext>> renderers;
+
+	public <C extends RenderingContext> void dispatchRender(final Format format, final PrintWriter w,
+			final RenderingContext context) {
+		boolean found = false;
+		for (final Renderer<RenderingContext> renderer : renderers) {
+			if (renderer.supports(context, format)) {
+				found = true;
+				renderer.render(w, context);
+				break;
 			}
 		}
-		return context;
+
+		if (!found) {
+			w.println("No renderere found for context. {context=" + context + ", format=" + format + "}");
+		}
+
+		w.flush();
+		w.close();
 	}
 
-	public List<Renderer<?>> getRenderers() {
-		return renderers;
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setApplicationContext(final ApplicationContext context) throws BeansException {
+		final Map rendererMap = context.getBeansOfType(Renderer.class);
+		this.renderers = rendererMap.values();
+		
+		if(CollectionUtils.isEmpty(renderers)){
+			throw new IllegalArgumentException("no renderers found");
+		} else {
+			System.out.println("renderers: " + rendererMap.size());
+		}
+		
+		
+		
 	}
-
-	public void setRenderers(List<Renderer<?>> renderers) {
-		this.renderers = renderers;
-	}
-
-	
-
 
 }

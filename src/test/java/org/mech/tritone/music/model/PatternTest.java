@@ -1,6 +1,12 @@
 package org.mech.tritone.music.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +59,7 @@ public class PatternTest {
 
 	@Test
 	public void testSetIntervalsStringOk() {
-		pattern.setIntervals(new String[] { "1", "b3", "aug5" });
+		pattern.setIntervalsString(new String[] { "1", "b3", "aug5" });
 		assertNotNull(pattern.getIntervals());
 		assertEquals(0, pattern.get(0));
 		assertEquals(3, pattern.get(1));
@@ -62,7 +68,7 @@ public class PatternTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetIntervalsStringBad() {
-		pattern.setIntervals(new String[] { "test" });
+		pattern.setIntervalsString(new String[] { "test" });
 	}
 
 	@Test
@@ -80,6 +86,20 @@ public class PatternTest {
 	public void testGetKey() {
 		pattern.setKey("test");
 		assertEquals("test", pattern.getKey());
+	}
+
+	@Test
+	public void testGetTones() {
+		final String[] majorChordIntervals = new String[] { "1", "3", "5" };
+		pattern.setIntervalsString(majorChordIntervals);
+
+		Collection<Tone> tones = pattern.toTones(Tone.C);
+
+		assertEquals(3, tones.size());
+		final Iterator<Tone> iterator = tones.iterator();
+		assertEquals(Tone.C, iterator.next());
+		assertEquals(Tone.E, iterator.next());
+		assertEquals(Tone.G, iterator.next());
 	}
 
 }

@@ -28,6 +28,14 @@ public class StringedInstrument implements Instrument, HasStrings {
 	private String name;
 	private Range range;
 
+	public StringedInstrument() {
+	}
+
+	public StringedInstrument(final Tuning t, final int length) {
+		this.tuning = t;
+		this.length = length;
+	}
+
 	@Override
 	public Tuning getTuning() {
 		return tuning;

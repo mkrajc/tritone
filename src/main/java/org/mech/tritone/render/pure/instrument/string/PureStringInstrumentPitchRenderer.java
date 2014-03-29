@@ -5,7 +5,9 @@ import java.io.PrintWriter;
 import org.mech.tritone.music.model.instrument.string.StringedPitch;
 import org.mech.tritone.render.Format;
 import org.mech.tritone.render.instrument.string.StringInstrumentPitchRenderer;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PureStringInstrumentPitchRenderer extends StringInstrumentPitchRenderer {
 
 	public PureStringInstrumentPitchRenderer() {
@@ -20,6 +22,5 @@ public class PureStringInstrumentPitchRenderer extends StringInstrumentPitchRend
 		}
 		writer.println();
 	}
-
 
 }

@@ -19,11 +19,9 @@ public class PitchUtils {
 			throw new IllegalArgumentException("offset cannot be lesser than zero");
 		}
 
-		int pitchClass2 = (pitch.getTone().getToneClass() + offset);
-		int octOffset = (int) Math.floor(pitchClass2 / 12.0);
-		int pitchClass = (pitch.getTone().getToneClass() + offset) % 12;
+		int octaveOffset = (int) Math.floor((pitch.getTone().getToneClass() + offset) / 12.0);
 
-		return new Pitch(Tone.fromToneClass(pitchClass), pitch.getOctave() + octOffset);
+		return new Pitch(pitch.getTone().add(offset), pitch.getOctave() + octaveOffset);
 	}
 
 	public static String format(final Pitch[] pitchs) {

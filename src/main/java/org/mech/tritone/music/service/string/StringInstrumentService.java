@@ -9,6 +9,5 @@ import org.mech.tritone.music.model.instrument.string.StringedPitch;
 public interface StringInstrumentService {
 	List<StringedPitch> findAllPitchs(StringedInstrument instrument, List<Tone> tones);
 
-	List<StringedPitch> findAllPitchs(StringedInstrument instrument, Tone tone, int fretFrom, int fretTo,
-			int stringIndex);
+	List<StringedPitch> findAllPitchs(StringedInstrument instrument, List<Tone> tones, int fretFrom, int fretTo, int stringIndex);
 }

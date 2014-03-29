@@ -14,6 +14,10 @@ public class Tuning implements HasRange {
 	private String name;
 	private String key;
 
+	public void setPitchs(final List<Pitch> pitchs) {
+		this.pitchs = pitchs;
+	}
+
 	private List<Pitch> pitchs;
 	private Range range;
 

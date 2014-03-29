@@ -1,5 +1,8 @@
 package org.mech.tritone.music.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.mech.tritone.music.utils.IntervalUtils;
@@ -32,8 +35,7 @@ public abstract class Pattern {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(name).append(intervals).append(abbrv)
-				.toString();
+		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(name).append(intervals).append(abbrv).toString();
 	}
 
 	public int[] getIntervals() {
@@ -54,6 +56,17 @@ public abstract class Pattern {
 				throw new IllegalArgumentException("Unknown interval " + intervalString);
 			}
 		}
+	}
+
+	public List<Tone> toTones(final Tone root) {
+		final List<Tone> set = new LinkedList<Tone>();
+
+		for (int interval : getIntervals()) {
+			set.add(root.add(interval));
+		}
+
+		return set;
+
 	}
 
 	public String getAbbrv() {

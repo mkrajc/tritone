@@ -1,5 +1,7 @@
 package org.mech.tritone.music.model;
 
+import java.util.List;
+
 public class TonePattern {
 	private Pattern pattern;
 	private Tone root;
@@ -10,6 +12,10 @@ public class TonePattern {
 		this.root = root;
 	}
 
+	public List<Tone> toTones() {
+		return pattern.toTones(root);
+
+	}
 
 	public Pattern getPattern() {
 		return pattern;

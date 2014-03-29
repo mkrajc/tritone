@@ -15,17 +15,21 @@ public class StringInstrumentServiceImpl implements StringInstrumentService {
 
 	@Override
 	public List<StringedPitch> findAllPitchs(final StringedInstrument instrument, final List<Tone> tones) {
+		final List<StringedPitch> list = new ArrayList<StringedPitch>();
 
-		return null;
+		for (int index = 0; index < instrument.getStringsCount(); index++) {
+			list.addAll(findAllPitchs(instrument, tones, 0, instrument.getLength(), index));
+		}
+
+		return list;
 	}
 
 	@Override
-	public List<StringedPitch> findAllPitchs(final StringedInstrument instrument, final Tone tone, final int fretFrom,
+	public List<StringedPitch> findAllPitchs(final StringedInstrument instrument, final List<Tone> tones, final int fretFrom,
 			final int fretTo, final int stringIndex) {
 
-		if (fretFrom < 0 || fretTo > instrument.getLength() || (fretFrom - fretTo) <= 0) {
-			throw new IllegalArgumentException("Invalid fret arguments {fretFrom=" + fretFrom + ", fretTo=" + fretTo
-					+ "}");
+		if (fretFrom < 0 || fretTo > instrument.getLength() || (fretTo - fretFrom) <= 0) {
+			throw new IllegalArgumentException("Invalid fret arguments {fretFrom=" + fretFrom + ", fretTo=" + fretTo + "}");
 		}
 
 		if (stringIndex < 0 || stringIndex >= instrument.getStringsCount()) {
@@ -38,12 +42,14 @@ public class StringInstrumentServiceImpl implements StringInstrumentService {
 
 		for (int fretPos = fretFrom; fretPos < fretTo; fretPos++) {
 			final Pitch pitchToCompare = PitchUtils.aug(naturalStringPitch, fretPos);
-			if (naturalStringPitch.getTone().equals(pitchToCompare.getTone())) {
-				list.add(new StringedPitch(pitchToCompare, stringIndex, fretPos));
+			for (Tone t : tones) {
+				if (t.equals(pitchToCompare.getTone())) {
+					list.add(new StringedPitch(pitchToCompare, stringIndex, fretPos));
+					break;
+				}
 			}
 		}
 
 		return list;
 	}
-
 }

@@ -8,15 +8,16 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Tone enumaration, has collection of all tones in octave, distinguishing
  * between enharmonic ones. So Cb and B are different, although it has same tone
- * class but different tone group.
+ * class but different tone group. Included double sharps and double flats.
  * 
  **/
 public enum Tone {
-	CBB(10, ToneGroup.C), CB(11, ToneGroup.C), C(0, ToneGroup.C), CS(1, ToneGroup.C), DBB(0, ToneGroup.D), DB(1, ToneGroup.D), D(2,
-			ToneGroup.D), DS(3, ToneGroup.D), EBB(2, ToneGroup.E), EB(3, ToneGroup.E), E(4, ToneGroup.E), ES(5, ToneGroup.E), FBB(3,
-			ToneGroup.F), FB(4, ToneGroup.F), F(5, ToneGroup.F), FS(6, ToneGroup.F), GBB(5, ToneGroup.G), GB(6, ToneGroup.G), G(7,
-			ToneGroup.G), GS(8, ToneGroup.G), ABB(7, ToneGroup.A), AB(8, ToneGroup.A), A(9, ToneGroup.A), AS(10, ToneGroup.A), BBB(9,
-			ToneGroup.B), BB(10, ToneGroup.B), B(11, ToneGroup.B), BS(0, ToneGroup.B);
+	CBB(10, ToneGroup.C), CB(11, ToneGroup.C), C(0, ToneGroup.C), CS(1, ToneGroup.C), CSS(2, ToneGroup.C), DBB(0, ToneGroup.D), DB(1,
+			ToneGroup.D), D(2, ToneGroup.D), DS(3, ToneGroup.D), DSS(4, ToneGroup.D), EBB(2, ToneGroup.E), EB(3, ToneGroup.E), E(4,
+			ToneGroup.E), ES(5, ToneGroup.E), ESS(6, ToneGroup.E), FBB(3, ToneGroup.F), FB(4, ToneGroup.F), F(5, ToneGroup.F), FS(6,
+			ToneGroup.F), FSS(7, ToneGroup.F), GBB(5, ToneGroup.G), GB(6, ToneGroup.G), G(7, ToneGroup.G), GS(8, ToneGroup.G), GSS(9,
+			ToneGroup.G), ABB(7, ToneGroup.A), AB(8, ToneGroup.A), A(9, ToneGroup.A), AS(10, ToneGroup.A), ASS(11, ToneGroup.A), BBB(9,
+			ToneGroup.B), BB(10, ToneGroup.B), B(11, ToneGroup.B), BS(0, ToneGroup.B), BSS(1, ToneGroup.B);
 
 	// tone class Db and Cs has same tone class;
 	private int tClass;

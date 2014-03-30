@@ -92,4 +92,18 @@ public class PatternTest {
 		assertEquals(Tone.G, iterator.next());
 	}
 
+	@Test
+	public void testGetTonesTrick() {
+		final String[] majorChordIntervals = new String[] { "1", "b3", "5" };
+		pattern.setIntervalsString(majorChordIntervals);
+
+		Collection<Tone> tones = pattern.toTones(Tone.CB);
+
+		assertEquals(3, tones.size());
+		final Iterator<Tone> iterator = tones.iterator();
+		assertEquals(Tone.CB, iterator.next());
+		assertEquals(Tone.EBB, iterator.next());
+		assertEquals(Tone.GB, iterator.next());
+	}
+
 }

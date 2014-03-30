@@ -9,7 +9,6 @@ import java.util.Map;
 import org.mech.tritone.music.model.Pitch;
 import org.mech.tritone.music.model.instrument.string.StringedInstrument;
 import org.mech.tritone.music.model.instrument.string.StringedPitch;
-import org.mech.tritone.music.utils.PitchUtils;
 import org.mech.tritone.render.Format;
 import org.mech.tritone.render.instrument.string.StringInstrumentPitchRenderer;
 import org.springframework.stereotype.Component;
@@ -41,7 +40,8 @@ public class TabStringInstrumentPitchRenderer extends StringInstrumentPitchRende
 			writer.print(naturalStringPitch.getTone().format());
 			writer.print("|");
 
-			Pitch onFret = PitchUtils.aug(naturalStringPitch, 0);
+			Pitch onFret = null;
+			// PitchUtils.aug(naturalStringPitch, 0);
 			if (shouldRenderPitch(onFret, stringMap, i)) {
 				writer.print("x");
 			} else {
@@ -51,7 +51,7 @@ public class TabStringInstrumentPitchRenderer extends StringInstrumentPitchRende
 
 			for (int fret = 1; fret < instrument.getLength(); fret++) {
 				writer.print("-");
-				onFret = PitchUtils.aug(naturalStringPitch, fret);
+				// onFret = PitchUtils.aug(naturalStringPitch, fret);
 
 				if (shouldRenderPitch(onFret, stringMap, i)) {
 					writer.print(onFret.getTone().format());

@@ -5,19 +5,18 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.mech.tritone.music.utils.IntervalUtils;
 
 /**
  * Pattern is set of intervals with some name and key. Can be used to identify
  * chords, scales.
  */
 public abstract class Pattern {
-	private int[] intervals;
+	private Interval[] intervals;
 	private String name;
 	private String abbrv;
 	private String key;
 
-	public int get(final int position) {
+	public Interval get(final int position) {
 		return intervals[position];
 	}
 
@@ -38,20 +37,20 @@ public abstract class Pattern {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(name).append(intervals).append(abbrv).toString();
 	}
 
-	public int[] getIntervals() {
+	public Interval[] getIntervals() {
 		return intervals;
 	}
 
-	public void setIntervals(final int[] intervals) {
+	public void setIntervals(final Interval[] intervals) {
 		this.intervals = intervals;
 	}
 
 	public void setIntervalsString(final String[] intervalStrings) {
-		this.intervals = new int[intervalStrings.length];
+		this.intervals = new Interval[intervalStrings.length];
 		for (int i = 0; i < intervalStrings.length; i++) {
 			final String intervalString = intervalStrings[i];
 			try {
-				intervals[i] = IntervalUtils.toInterval(intervalString).getDistance();
+				intervals[i] = Interval.create(intervalString);
 			} catch (final IllegalArgumentException exception) {
 				throw new IllegalArgumentException("Unknown interval " + intervalString);
 			}
@@ -61,8 +60,8 @@ public abstract class Pattern {
 	public List<Tone> toTones(final Tone root) {
 		final List<Tone> set = new LinkedList<Tone>();
 
-		for (int interval : getIntervals()) {
-			set.add(root.add(interval));
+		for (Interval interval : getIntervals()) {
+			set.add(root.applyInterval(interval));
 		}
 
 		return set;

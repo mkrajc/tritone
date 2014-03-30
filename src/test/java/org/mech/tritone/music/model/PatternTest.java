@@ -1,9 +1,6 @@
 package org.mech.tritone.music.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,14 +25,14 @@ public class PatternTest {
 
 	@Test
 	public void testGet() {
-		pattern.setIntervals(new int[] { 1, 2 });
-		assertEquals(1, pattern.get(0));
-		assertEquals(2, pattern.get(1));
+		pattern.setIntervalsString(new String[] { "1", "2" });
+		assertEquals(IntervalType.PRIMA.create(), pattern.get(0));
+		assertEquals(IntervalType.SECUNDA.create(), pattern.get(1));
 	}
 
 	@Test
 	public void testLength() {
-		pattern.setIntervals(new int[] { 1, 2 });
+		pattern.setIntervalsString(new String[] { "1", "2" });
 		assertEquals(2, pattern.length());
 	}
 
@@ -51,19 +48,12 @@ public class PatternTest {
 	}
 
 	@Test
-	public void testGetIntervals() {
-		final int[] intervals = new int[] { 1, 2 };
-		pattern.setIntervals(intervals);
-		assertSame(intervals, pattern.getIntervals());
-	}
-
-	@Test
 	public void testSetIntervalsStringOk() {
-		pattern.setIntervalsString(new String[] { "1", "b3", "aug5" });
+		pattern.setIntervalsString(new String[] { "1", "b3", "#5" });
 		assertNotNull(pattern.getIntervals());
-		assertEquals(0, pattern.get(0));
-		assertEquals(3, pattern.get(1));
-		assertEquals(8, pattern.get(2));
+		assertEquals(0, pattern.get(0).getDistance());
+		assertEquals(3, pattern.get(1).getDistance());
+		assertEquals(8, pattern.get(2).getDistance());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

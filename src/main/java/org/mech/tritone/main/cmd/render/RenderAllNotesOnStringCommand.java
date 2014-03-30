@@ -29,7 +29,7 @@ public class RenderAllNotesOnStringCommand {
 		final StringInstrumentPitchRenderer.Context context = new StringInstrumentPitchRenderer.Context();
 		context.setPitchs(allTones);
 		context.setInstrument(instrument);
-		rendererDispatcher.dispatchRender(Format.TAB, writer, context);
+		rendererDispatcher.dispatchRender(Format.PURE, writer, context);
 	}
 
 }

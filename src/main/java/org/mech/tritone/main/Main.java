@@ -18,6 +18,7 @@ import org.mech.tritone.main.cmd.ListAllTonesCommand;
 import org.mech.tritone.main.cmd.ListAllTuningsCommand;
 import org.mech.tritone.main.cmd.RenderCommand;
 import org.mech.tritone.main.cmd.render.RenderAllNotesOnStringCommand;
+import org.mech.tritone.main.cmd.show.ShowPatternNotesCommand;
 import org.mech.tritone.music.model.Pattern;
 import org.mech.tritone.music.model.Tone;
 import org.mech.tritone.music.model.TonePattern;
@@ -50,6 +51,9 @@ public class Main {
 
 	@Autowired
 	private RenderCommand renderCommand;
+
+	@Autowired
+	private ShowPatternNotesCommand command;
 
 	@Autowired
 	private RenderAllNotesOnStringCommand renderAllNotesOnStringCommand;
@@ -87,9 +91,10 @@ public class Main {
 				listAllTonesCommand.execute();
 				System.exit(0);
 			}
-
-			renderAllNotesOnStringCommand.execute(prepareWriter(line), new TonePattern(preparePattern(line),
-					prepareTone(line)), prepareTuning(line), prepareFretLength(line));
+			command.execute(prepareWriter(line), new TonePattern(preparePattern(line), prepareTone(line)));
+			// renderAllNotesOnStringCommand.execute(prepareWriter(line), new
+			// TonePattern(preparePattern(line), prepareTone(line)),
+			// prepareTuning(line), prepareFretLength(line));
 			System.exit(0);
 
 		} catch (final ParseException exp) {
@@ -120,8 +125,7 @@ public class Main {
 		final Tuning tuning = dataService.getTuning(tuningValue);
 
 		if (tuning == null) {
-			throw new ParseException(String.format(
-					"Tuning '%s' is not valid. Please select one, for all tunings use -%s", tuningValue,
+			throw new ParseException(String.format("Tuning '%s' is not valid. Please select one, for all tunings use -%s", tuningValue,
 					Arguments.LIST_TUNING));
 		}
 		return tuning;
@@ -145,8 +149,8 @@ public class Main {
 		try {
 			return Tone.valueOf(toneValue.toUpperCase());
 		} catch (final IllegalArgumentException ex) {
-			throw new ParseException(String.format("Tone '%s' is not valid. Please select one, for all tones use -%s",
-					toneValue, Arguments.LIST_TONE));
+			throw new ParseException(String.format("Tone '%s' is not valid. Please select one, for all tones use -%s", toneValue,
+					Arguments.LIST_TONE));
 		}
 	}
 
@@ -155,8 +159,7 @@ public class Main {
 		try {
 			return Integer.valueOf(fretLengthValue);
 		} catch (final NumberFormatException ex) {
-			throw new ParseException(String.format("Fret length '%s' is not valid. Please provide number.",
-					fretLengthValue));
+			throw new ParseException(String.format("Fret length '%s' is not valid. Please provide number.", fretLengthValue));
 		}
 	}
 

@@ -1,5 +1,8 @@
 package org.mech.tritone.music.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -34,6 +37,22 @@ public class Pitch implements Comparable<Pitch> {
 		this.octave = octave;
 	}
 
+	public List<Pitch> applyDistance(final int distance) {
+		List<Pitch> list = new ArrayList<Pitch>();
+		int octaveOffset = (int) Math.floor((getTone().getToneClass() + distance) / 12.0);
+		int newOctave = octave + octaveOffset;
+
+		List<Tone> tones = tone.applyDistance(distance);
+
+		for (Tone t : tones) {
+			list.add(new Pitch(t, newOctave));
+
+		}
+
+		return list;
+
+	}
+
 	@Override
 	public String toString() {
 		return getTone().format() + octave;
@@ -49,8 +68,8 @@ public class Pitch implements Comparable<Pitch> {
 			return true;
 		}
 		Pitch pitch = (Pitch) obj;
-		return new EqualsBuilder().appendSuper(super.equals(obj)).append(tone, pitch.getTone())
-				.append(octave, pitch.getOctave()).isEquals();
+		return new EqualsBuilder().appendSuper(super.equals(obj)).append(tone, pitch.getTone()).append(octave, pitch.getOctave())
+				.isEquals();
 	}
 
 	@Override
@@ -59,7 +78,7 @@ public class Pitch implements Comparable<Pitch> {
 	}
 
 	@Override
-	public int compareTo(Pitch p) {
+	public int compareTo(final Pitch p) {
 		int cmp = tone.compareTo(p.getTone());
 		if (cmp == 0) {
 			return Integer.valueOf(octave).compareTo(p.getOctave());

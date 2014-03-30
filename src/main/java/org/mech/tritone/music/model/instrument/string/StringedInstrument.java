@@ -5,7 +5,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.mech.tritone.music.model.Pitch;
 import org.mech.tritone.music.model.instrument.Instrument;
 import org.mech.tritone.music.model.instrument.Range;
-import org.mech.tritone.music.utils.PitchUtils;
 
 /**
  * <p>
@@ -86,7 +85,8 @@ public class StringedInstrument implements Instrument, HasStrings {
 		if (range == null) {
 			range = new Range();
 			range.setFrom(tuning.getRange().from());
-			final Pitch lastPitch = PitchUtils.aug(tuning.getRange().to(), length);
+			final Pitch lastPitch = null; // PitchUtils.aug(tuning.getRange().to(),
+											// length);
 			range.setTo(lastPitch);
 		}
 		return range;

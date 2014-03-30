@@ -14,15 +14,18 @@ public class PitchUtils {
 		return new Pitch(t, octave);
 	}
 
-	public static Pitch aug(final Pitch pitch, final int offset) {
-		if (offset < 0) {
-			throw new IllegalArgumentException("offset cannot be lesser than zero");
-		}
-
-		int octaveOffset = (int) Math.floor((pitch.getTone().getToneClass() + offset) / 12.0);
-
-		return new Pitch(pitch.getTone().add(offset), pitch.getOctave() + octaveOffset);
-	}
+	// @Deprecated
+	// public static Pitch aug(final Pitch pitch, final int offset) {
+	// if (offset < 0) {
+	// throw new IllegalArgumentException("offset cannot be lesser than zero");
+	// }
+	//
+	// int octaveOffset = (int) Math.floor((pitch.getTone().getToneClass() +
+	// offset) / 12.0);
+	//
+	// return new Pitch(pitch.getTone().add(offset), pitch.getOctave() +
+	// octaveOffset);
+	// }
 
 	public static String format(final Pitch[] pitchs) {
 		StringBuilder builder = new StringBuilder();

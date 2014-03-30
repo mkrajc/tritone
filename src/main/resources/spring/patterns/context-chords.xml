@@ -94,14 +94,14 @@
 	<!-- aug -->
 	<bean id="patternChordAug" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Augumented Chord"></property>
-		<property name="intervalsString" value="1,b3,aug5" />
+		<property name="intervalsString" value="1,b3,#5" />
 		<property name="abbrv" value="aug" />
 		<property name="key" value="aug" />
 	</bean>
 	
 	<bean id="patternChordAug7" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Augumented Chord"></property>
-		<property name="intervalsString" value="1,b3,aug5,b7" />
+		<property name="intervalsString" value="1,b3,#5,b7" />
 		<property name="abbrv" value="aug7" />
 		<property name="key" value="aug7" />
 	</bean>
@@ -130,7 +130,7 @@
 
 	<bean id="patternChordDominant7aug5" class="org.mech.tritone.music.model.ChordPattern">
 		<property name="name" value="Dominant 7#5 Chord"></property>
-		<property name="intervalsString" value="1,3,aug5,b7" />
+		<property name="intervalsString" value="1,3,#5,b7" />
 		<property name="abbrv" value="7#5" />
 		<property name="key" value="dom7#5" />
 	</bean>

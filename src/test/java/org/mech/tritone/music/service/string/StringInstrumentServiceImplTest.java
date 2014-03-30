@@ -1,7 +1,6 @@
 package org.mech.tritone.music.service.string;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,7 +53,7 @@ public class StringInstrumentServiceImplTest {
 	public void testFindSameTone() {
 		List<StringedPitch> ret = instrumentService.findAllPitchs(createTestGuitar(4, Tone.A), Arrays.asList(Tone.A, Tone.A, Tone.A));
 		assertNotNull(ret);
-		assertEquals(1, ret.size());
+		assertEquals(3, ret.size());
 	}
 
 	private StringedInstrument createTestGuitar(final int fretLength, final Tone t) {

@@ -7,7 +7,6 @@ import org.mech.tritone.music.model.Pitch;
 import org.mech.tritone.music.model.Tone;
 import org.mech.tritone.music.model.instrument.string.StringedInstrument;
 import org.mech.tritone.music.model.instrument.string.StringedPitch;
-import org.mech.tritone.music.utils.PitchUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,11 +40,13 @@ public class StringInstrumentServiceImpl implements StringInstrumentService {
 		final Pitch naturalStringPitch = instrument.getNaturalStringPitch(stringIndex);
 
 		for (int fretPos = fretFrom; fretPos < fretTo; fretPos++) {
-			final Pitch pitchToCompare = PitchUtils.aug(naturalStringPitch, fretPos);
+			final List<Pitch> availables = naturalStringPitch.applyDistance(fretPos);
 			for (Tone t : tones) {
-				if (t.equals(pitchToCompare.getTone())) {
-					list.add(new StringedPitch(pitchToCompare, stringIndex, fretPos));
-					break;
+				for (Pitch available : availables) {
+					if (available.getTone().equals(t)) {
+						list.add(new StringedPitch(available, stringIndex, fretPos));
+						break;
+					}
 				}
 			}
 		}

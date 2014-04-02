@@ -3,6 +3,10 @@ package org.mech.tritone.main;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -12,6 +16,9 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.mech.tritone.main.arg.Arguments;
 import org.mech.tritone.main.arg.CliOptions;
+import org.mech.tritone.main.cmd.Command;
+import org.mech.tritone.main.cmd.CommandException;
+import org.mech.tritone.main.cmd.CommandLineUtils;
 import org.mech.tritone.main.cmd.ListAllChordsCommand;
 import org.mech.tritone.main.cmd.ListAllScalesCommand;
 import org.mech.tritone.main.cmd.ListAllTonesCommand;
@@ -21,7 +28,6 @@ import org.mech.tritone.main.cmd.render.RenderAllNotesOnStringCommand;
 import org.mech.tritone.main.cmd.show.ShowPatternNotesCommand;
 import org.mech.tritone.music.model.Pattern;
 import org.mech.tritone.music.model.Tone;
-import org.mech.tritone.music.model.TonePattern;
 import org.mech.tritone.music.model.instrument.string.Tuning;
 import org.mech.tritone.music.service.MusicDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,37 +67,62 @@ public class Main {
 	@Autowired
 	private MusicDataService dataService;
 
+	@Resource(name = "commandMap")
+	private Map<String, Command> commandDispatcher;
+
 	public void process(final String... args) {
 		final CliOptions options = new CliOptions();
 		final CommandLineParser parser = new GnuParser();
 
+		if (args.length == 0) {
+			help(options);
+		}
+
+		final Command command = commandDispatcher.get(args[0]);
+
+		if (command == null) {
+			System.err.println("Unknown command '" + args[0] + "'. Use help for help.");
+			System.exit(1);
+		}
+
 		try {
 			final CommandLine line = parser.parse(options, args);
 
-			if (line.hasOption(Arguments.HELP)) {
-				help(options);
-			}
+			// get rid of first command
+			final List<String> subList = line.getArgList().subList(1, line.getArgList().size());
 
-			if (line.hasOption(Arguments.LIST_CHORDS)) {
-				listAllChordsCommand.execute();
-				System.exit(0);
-			}
+			// prepare stuff
+			CommandLineUtils.prepareWriter(line);
 
-			if (line.hasOption(Arguments.LIST_SCALE)) {
-				listAllScalesCommand.execute();
-				System.exit(0);
-			}
+			command.execute(line, subList);
+			
+			CommandLineUtils.getWriter().close();
 
-			if (line.hasOption(Arguments.LIST_TUNING)) {
-				listAllTuningsCommand.execute();
-				System.exit(0);
-			}
-
-			if (line.hasOption(Arguments.LIST_TONE)) {
-				listAllTonesCommand.execute();
-				System.exit(0);
-			}
-			command.execute(prepareWriter(line), new TonePattern(preparePattern(line), prepareTone(line)));
+			// if (line.hasOption(Arguments.HELP)) {
+			// help(options);
+			// }
+			//
+			// if (line.hasOption(Arguments.LIST_CHORDS)) {
+			// listAllChordsCommand.execute();
+			// System.exit(0);
+			// }
+			//
+			// if (line.hasOption(Arguments.LIST_SCALE)) {
+			// listAllScalesCommand.execute();
+			// System.exit(0);
+			// }
+			//
+			// if (line.hasOption(Arguments.LIST_TUNING)) {
+			// listAllTuningsCommand.execute();
+			// System.exit(0);
+			// }
+			//
+			// if (line.hasOption(Arguments.LIST_TONE)) {
+			// listAllTonesCommand.execute();
+			// System.exit(0);
+			// }
+			// command.execute(prepareWriter(line), new
+			// TonePattern(preparePattern(line), prepareTone(line)));
 			// renderAllNotesOnStringCommand.execute(prepareWriter(line), new
 			// TonePattern(preparePattern(line), prepareTone(line)),
 			// prepareTuning(line), prepareFretLength(line));
@@ -102,6 +133,9 @@ public class Main {
 			System.exit(1);
 		} catch (final IOException e) {
 			System.err.println("IO exception.  Reason: " + e.getMessage());
+			System.exit(1);
+		} catch (final CommandException e) {
+			System.err.println(e.getMessage());
 			System.exit(1);
 		}
 	}
@@ -125,7 +159,8 @@ public class Main {
 		final Tuning tuning = dataService.getTuning(tuningValue);
 
 		if (tuning == null) {
-			throw new ParseException(String.format("Tuning '%s' is not valid. Please select one, for all tunings use -%s", tuningValue,
+			throw new ParseException(String.format(
+					"Tuning '%s' is not valid. Please select one, for all tunings use -%s", tuningValue,
 					Arguments.LIST_TUNING));
 		}
 		return tuning;
@@ -149,8 +184,8 @@ public class Main {
 		try {
 			return Tone.valueOf(toneValue.toUpperCase());
 		} catch (final IllegalArgumentException ex) {
-			throw new ParseException(String.format("Tone '%s' is not valid. Please select one, for all tones use -%s", toneValue,
-					Arguments.LIST_TONE));
+			throw new ParseException(String.format("Tone '%s' is not valid. Please select one, for all tones use -%s",
+					toneValue, Arguments.LIST_TONE));
 		}
 	}
 
@@ -159,7 +194,8 @@ public class Main {
 		try {
 			return Integer.valueOf(fretLengthValue);
 		} catch (final NumberFormatException ex) {
-			throw new ParseException(String.format("Fret length '%s' is not valid. Please provide number.", fretLengthValue));
+			throw new ParseException(String.format("Fret length '%s' is not valid. Please provide number.",
+					fretLengthValue));
 		}
 	}
 

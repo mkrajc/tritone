@@ -11,6 +11,7 @@ import org.mech.tritone.music.model.ChordPattern;
 import org.mech.tritone.music.model.Pattern;
 import org.mech.tritone.music.model.PatternType;
 import org.mech.tritone.music.model.ScalePattern;
+import org.mech.tritone.music.model.Tone;
 import org.mech.tritone.music.model.instrument.string.Tuning;
 import org.mech.tritone.music.service.MusicDataService;
 import org.springframework.beans.BeansException;
@@ -19,34 +20,33 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 @Service("musicDataService")
-public class MusicDataServiceImpl implements MusicDataService, ApplicationContextAware{
-	
-	private Map<String, Pattern> patternMap = new HashMap<String, Pattern>();
-	
-	private Map<String, Tuning> tuningMap = new HashMap<String, Tuning>();
+public class MusicDataServiceImpl implements MusicDataService, ApplicationContextAware {
+
+	private final Map<String, Pattern> patternMap = new HashMap<String, Pattern>();
+
+	private final Map<String, Tuning> tuningMap = new HashMap<String, Tuning>();
 
 	@Override
-	public Pattern getPattern(String patternName) {
+	public Pattern getPattern(final String patternName) {
 		return patternMap.get(patternName);
 	}
 
 	@Override
-	public Tuning getTuning(String tuningName) {
+	public Tuning getTuning(final String tuningName) {
 		return tuningMap.get(tuningName);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setApplicationContext(ApplicationContext context)
-			throws BeansException {
-		Map<String, Pattern> patternsMap = context.getBeansOfType(Pattern.class);
-		Map<String, Tuning> tMap = context.getBeansOfType(Tuning.class);
-		
-		for(Pattern pattern : patternsMap.values()){
+	public void setApplicationContext(final ApplicationContext context) throws BeansException {
+		final Map<String, Pattern> patternsMap = context.getBeansOfType(Pattern.class);
+		final Map<String, Tuning> tMap = context.getBeansOfType(Tuning.class);
+
+		for (final Pattern pattern : patternsMap.values()) {
 			patternMap.put(pattern.getKey(), pattern);
 		}
-		
-		for(Tuning t : tMap.values()){
+
+		for (final Tuning t : tMap.values()) {
 			tuningMap.put(t.getKey(), t);
 		}
 	}
@@ -58,16 +58,16 @@ public class MusicDataServiceImpl implements MusicDataService, ApplicationContex
 
 	@Override
 	public List<ChordPattern> getAllChordPatterns() {
-		List<ChordPattern> chordPatterns = new ArrayList<ChordPattern>();
-		for(Pattern p : patternMap.values()){
-			if(PatternType.CHORD.equals(p.getType())){
-				chordPatterns.add((ChordPattern)p);
+		final List<ChordPattern> chordPatterns = new ArrayList<ChordPattern>();
+		for (final Pattern p : patternMap.values()) {
+			if (PatternType.CHORD.equals(p.getType())) {
+				chordPatterns.add((ChordPattern) p);
 			}
 		}
-		
+
 		Collections.sort(chordPatterns, new Comparator<ChordPattern>() {
 			@Override
-			public int compare(ChordPattern o1, ChordPattern o2) {
+			public int compare(final ChordPattern o1, final ChordPattern o2) {
 				return o1.getKey().compareTo(o2.getKey());
 			}
 		});
@@ -76,8 +76,8 @@ public class MusicDataServiceImpl implements MusicDataService, ApplicationContex
 
 	@Override
 	public List<ScalePattern> getAllScalePatterns() {
-		List<ScalePattern> scalePatterns = new ArrayList<ScalePattern>();
-		for (Pattern p : patternMap.values()) {
+		final List<ScalePattern> scalePatterns = new ArrayList<ScalePattern>();
+		for (final Pattern p : patternMap.values()) {
 			if (PatternType.SCALE.equals(p.getType())) {
 				scalePatterns.add((ScalePattern) p);
 			}
@@ -88,6 +88,11 @@ public class MusicDataServiceImpl implements MusicDataService, ApplicationContex
 	@Override
 	public List<Tuning> getAllTunings() {
 		return new ArrayList<Tuning>(tuningMap.values());
+	}
+
+	@Override
+	public Tone getTone(final String toneString) {
+		return Tone.valueOf(toneString.toUpperCase());
 	}
 
 }

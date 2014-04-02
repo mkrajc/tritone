@@ -41,16 +41,21 @@ public enum Tone {
 	public String format() {
 		return StringUtils.capitalize(name().toLowerCase().replace('s', '#'));
 	}
+	
+	@Override
+	public String toString() {
+		return format();
+	}
 
 	public Tone add(final int offset) {
-		int newTClass = (tClass + offset) % 12;
+		final int newTClass = (tClass + offset) % 12;
 		return Tone.fromToneClass(newTClass);
 	}
 
 	public Tone applyInterval(final Interval interval) {
-		int newToneClass = (tClass + interval.getDistance()) % 12;
-		int newGroupIndex = (group.ordinal() + interval.getIntervalType().ordinal()) % ToneGroup.values().length;
-		ToneGroup newGroup = ToneGroup.values()[newGroupIndex];
+		final int newToneClass = (tClass + interval.getDistance()) % 12;
+		final int newGroupIndex = (group.ordinal() + interval.getIntervalType().ordinal()) % ToneGroup.values().length;
+		final ToneGroup newGroup = ToneGroup.values()[newGroupIndex];
 
 		return Tone.fromToneClass(newToneClass, newGroup);
 	}
@@ -58,7 +63,7 @@ public enum Tone {
 	public List<Tone> applyDistance(final int distance) {
 		final List<Tone> list = new ArrayList<Tone>();
 		final int toneClass = (tClass + distance) % 12;
-		for (Tone t : values()) {
+		for (final Tone t : values()) {
 			if (t.getToneClass() == toneClass) {
 				list.add(t);
 			}
@@ -67,7 +72,7 @@ public enum Tone {
 	}
 
 	public static Tone fromToneClass(final int toneClass) {
-		for (Tone t : values()) {
+		for (final Tone t : values()) {
 			if (t.getToneClass() == toneClass) {
 				return t;
 			}
@@ -76,7 +81,7 @@ public enum Tone {
 	}
 
 	public static Tone fromToneClass(final int toneClass, final ToneGroup group) {
-		for (Tone t : values()) {
+		for (final Tone t : values()) {
 			if (t.getToneClass() == toneClass && t.getToneGroup() == group) {
 				return t;
 			}

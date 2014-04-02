@@ -12,6 +12,9 @@ public interface Arguments {
 
 	public static final String LIST_CHORDS = "lc";
 	public static final String LIST_CHORDS_LONG = "listChords";
+	
+	public static final String NOTATION = "n";
+	public static final String NOTATION_LONG = "notation";
 
 	public static final String LIST_SCALE = "ls";
 	public static final String LIST_SCALE_LONG = "listScales";

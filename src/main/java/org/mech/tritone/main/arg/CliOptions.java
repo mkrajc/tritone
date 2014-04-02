@@ -30,6 +30,9 @@ public class CliOptions extends Options {
 		
 		addOption(OptionBuilder.withLongOpt(Arguments.FRET_LONG).withDescription("fret length").hasArg().withArgName("LENGTH")
 				.create(Arguments.FRET));
+		
+		addOption(OptionBuilder.withLongOpt(Arguments.NOTATION_LONG).withDescription("notation of notes").hasArg().withArgName("<eu|us>")
+				.create(Arguments.NOTATION));
 
 		addOption(OptionBuilder.withLongOpt(Arguments.PATTERN_LONG).withDescription("pattern definition").hasArg()
 				.withArgName("CHORD|SCALE").create(Arguments.PATTERN));

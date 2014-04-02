@@ -27,7 +27,6 @@ import org.mech.tritone.main.cmd.RenderCommand;
 import org.mech.tritone.main.cmd.render.RenderAllNotesOnStringCommand;
 import org.mech.tritone.main.cmd.show.ShowPatternNotesCommand;
 import org.mech.tritone.music.model.Pattern;
-import org.mech.tritone.music.model.Tone;
 import org.mech.tritone.music.model.instrument.string.Tuning;
 import org.mech.tritone.music.service.MusicDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class Main {
 
 	private static final String DEFAULT_TUNING = "guitar";
 	private static final String DEFAULT_PATTERN = "major";
-	private static final String DEFAULT_TONE = "C";
+	
 	private static final String DEFAULT_FRET_LENGTH = "21";
 
 	@Autowired
@@ -93,6 +92,7 @@ public class Main {
 
 			// prepare stuff
 			CommandLineUtils.prepareWriter(line);
+			CommandLineUtils.prepareNotation(line);
 
 			command.execute(line, subList);
 			
@@ -177,16 +177,6 @@ public class Main {
 					commandLine.getOptionValue(Arguments.PATTERN), Arguments.LIST_CHORDS, Arguments.LIST_SCALE));
 		}
 		return pattern;
-	}
-
-	private Tone prepareTone(final CommandLine commandLine) throws ParseException {
-		final String toneValue = commandLine.getOptionValue(Arguments.TONE, DEFAULT_TONE);
-		try {
-			return Tone.valueOf(toneValue.toUpperCase());
-		} catch (final IllegalArgumentException ex) {
-			throw new ParseException(String.format("Tone '%s' is not valid. Please select one, for all tones use -%s",
-					toneValue, Arguments.LIST_TONE));
-		}
 	}
 
 	private int prepareFretLength(final CommandLine commandLine) throws ParseException {

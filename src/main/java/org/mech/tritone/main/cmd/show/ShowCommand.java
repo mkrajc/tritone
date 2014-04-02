@@ -52,19 +52,17 @@ public class ShowCommand extends AbstractCommand implements Command {
 			final TonePattern tp = new TonePattern(pattern, tone);
 			
 			final List<Tone> tones = tp.toTones();
-			writeln(StringUtils.toString(tones.toArray()));
+			writeln(Tone.toString(tones.toArray(new Tone[]{})));
 		}
 
 	}
 
 	private Tone getTone(final String toneString) {
-		Tone t;
 		try {
-			t = musicService.getTone(toneString);
+			return Tone.fromString(toneString);
 		} catch (final IllegalArgumentException argumentException) {
 			throw new CommandException("Unknown tone '" + toneString + "'");
 		}
-		return t;
 	}
 
 	private Pattern getPattern(final String pttrn) {

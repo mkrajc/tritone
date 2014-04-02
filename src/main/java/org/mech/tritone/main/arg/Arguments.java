@@ -27,7 +27,7 @@ public interface Arguments {
 	
 	public static final String FRET = "f";
 	public static final String FRET_LONG = "fret";
-
+	
 	public static final String PATTERN = "p";
 	public static final String PATTERN_LONG = "pattern";
 

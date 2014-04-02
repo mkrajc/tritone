@@ -11,7 +11,6 @@ import org.mech.tritone.music.model.ChordPattern;
 import org.mech.tritone.music.model.Pattern;
 import org.mech.tritone.music.model.PatternType;
 import org.mech.tritone.music.model.ScalePattern;
-import org.mech.tritone.music.model.Tone;
 import org.mech.tritone.music.model.instrument.string.Tuning;
 import org.mech.tritone.music.service.MusicDataService;
 import org.springframework.beans.BeansException;
@@ -88,11 +87,6 @@ public class MusicDataServiceImpl implements MusicDataService, ApplicationContex
 	@Override
 	public List<Tuning> getAllTunings() {
 		return new ArrayList<Tuning>(tuningMap.values());
-	}
-
-	@Override
-	public Tone getTone(final String toneString) {
-		return Tone.valueOf(toneString.toUpperCase());
 	}
 
 }

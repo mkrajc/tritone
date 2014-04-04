@@ -4,12 +4,6 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	
-	<bean id="instrumentBass" class="org.mech.tritone.music.model.instrument.string.StringedInstrument">
-		<property name="name" value="bass guitar" />
-		<property name="tuning" ref="tuningBass4" />
-		<property name="length" value="22" />
-	</bean>
-
 	<bean id="tuningBass4" class="org.mech.tritone.music.model.instrument.string.Tuning">
 		<property name="key" value="bass"/>
 		<property name="name" value="standard bass tuning"/>

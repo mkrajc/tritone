@@ -9,7 +9,6 @@ public abstract class AbstractFormatRenderer<T extends RenderingContext> impleme
 		this.format = format;
 	}
 
-	@Override
 	public Format getSupportedFormat() {
 		return format;
 	}

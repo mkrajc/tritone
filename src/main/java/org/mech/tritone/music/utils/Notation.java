@@ -72,7 +72,7 @@ public enum Notation {
 		usToneMap.put("a#", Tone.AS);
 		usToneMap.put("bb", Tone.BB);
 		usToneMap.put("b", Tone.B);
-		usToneMap.put("bs", Tone.BS);
+		usToneMap.put("b#", Tone.BS);
 
 		usToneMap.put("c##", Tone.CSS);
 		usToneMap.put("d##", Tone.DSS);

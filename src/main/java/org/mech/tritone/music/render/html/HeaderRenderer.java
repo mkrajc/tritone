@@ -44,12 +44,6 @@ public class HeaderRenderer extends AbstractHtmlRenderer<MusicRenderingContextIm
 	}
 
 	@Override
-	public Format getSupportedFormat() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean supports(final RenderingContext context, final Format format) {
 		// TODO Auto-generated method stub
 		return false;

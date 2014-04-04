@@ -25,20 +25,22 @@ public class CliOptions extends Options {
 		addOption(new Option(Arguments.LIST_TUNING, Arguments.LIST_TUNING_LONG, false, "list all tuning names"));
 		addOption(new Option(Arguments.LIST_TONE, Arguments.LIST_TONE_LONG, false, "list all tones names"));
 
-		addOption(OptionBuilder.withLongOpt(Arguments.TUNING_LONG).withDescription("tuning definition").hasArg().withArgName("TUNING")
-				.create(Arguments.TUNING));
+		addOption(OptionBuilder.withLongOpt(Arguments.SI_TUNING_LONG).withDescription("string instrument tuning type")
+				.hasArg().withArgName("TUNING").create(Arguments.SI_TUNING));
+		addOption(OptionBuilder.withLongOpt(Arguments.SI_FRET_LONG).withDescription("fret length").hasArg()
+				.withArgName("LENGTH").create(Arguments.SI_FRET));
+
+		addOption(OptionBuilder.withLongOpt(Arguments.NOTATION_LONG).withDescription("notation of notes").hasArg()
+				.withArgName("eu|us").create(Arguments.NOTATION));
 		
-		addOption(OptionBuilder.withLongOpt(Arguments.FRET_LONG).withDescription("fret length").hasArg().withArgName("LENGTH")
-				.create(Arguments.FRET));
-		
-		addOption(OptionBuilder.withLongOpt(Arguments.NOTATION_LONG).withDescription("notation of notes").hasArg().withArgName("<eu|us>")
-				.create(Arguments.NOTATION));
+		addOption(OptionBuilder.withLongOpt(Arguments.FORMAT_LONG).withDescription("format for export").hasArg()
+				.withArgName("html|pure|tab").create(Arguments.FORMAT));
 
 		addOption(OptionBuilder.withLongOpt(Arguments.PATTERN_LONG).withDescription("pattern definition").hasArg()
 				.withArgName("CHORD|SCALE").create(Arguments.PATTERN));
 
-		addOption(OptionBuilder.withLongOpt(Arguments.TONE_LONG).withDescription("letter representing tone ").hasArg().withArgName("TONE")
-				.create(Arguments.TONE));
+		addOption(OptionBuilder.withLongOpt(Arguments.TONE_LONG).withDescription("letter representing tone ").hasArg()
+				.withArgName("TONE").create(Arguments.TONE));
 
 		addOption(new Option(Arguments.FILE_PATH, true, "path to generated file"));
 	}

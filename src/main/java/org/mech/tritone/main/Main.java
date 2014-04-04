@@ -24,10 +24,6 @@ import org.mech.tritone.main.cmd.ListAllScalesCommand;
 import org.mech.tritone.main.cmd.ListAllTonesCommand;
 import org.mech.tritone.main.cmd.ListAllTuningsCommand;
 import org.mech.tritone.main.cmd.RenderCommand;
-import org.mech.tritone.main.cmd.render.RenderAllNotesOnStringCommand;
-import org.mech.tritone.main.cmd.show.ShowPatternNotesCommand;
-import org.mech.tritone.music.model.Pattern;
-import org.mech.tritone.music.model.instrument.string.Tuning;
 import org.mech.tritone.music.service.MusicDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -37,9 +33,6 @@ import org.springframework.stereotype.Component;
 @Component("Main")
 public class Main {
 
-	private static final String DEFAULT_TUNING = "guitar";
-	private static final String DEFAULT_PATTERN = "major";
-	
 	private static final String DEFAULT_FRET_LENGTH = "21";
 
 	@Autowired
@@ -56,12 +49,6 @@ public class Main {
 
 	@Autowired
 	private RenderCommand renderCommand;
-
-	@Autowired
-	private ShowPatternNotesCommand command;
-
-	@Autowired
-	private RenderAllNotesOnStringCommand renderAllNotesOnStringCommand;
 
 	@Autowired
 	private MusicDataService dataService;
@@ -153,41 +140,6 @@ public class Main {
 		return new PrintWriter(System.out);
 	}
 
-	private Tuning prepareTuning(final CommandLine commandLine) throws ParseException {
-		final String tuningValue = commandLine.getOptionValue(Arguments.TUNING, DEFAULT_TUNING);
-
-		final Tuning tuning = dataService.getTuning(tuningValue);
-
-		if (tuning == null) {
-			throw new ParseException(String.format(
-					"Tuning '%s' is not valid. Please select one, for all tunings use -%s", tuningValue,
-					Arguments.LIST_TUNING));
-		}
-		return tuning;
-	}
-
-	private Pattern preparePattern(final CommandLine commandLine) throws ParseException {
-		final String pttrnValue = commandLine.getOptionValue(Arguments.PATTERN, DEFAULT_PATTERN);
-
-		final Pattern pattern = dataService.getPattern(pttrnValue);
-
-		if (pttrnValue == null) {
-			throw new ParseException(String.format(
-					"Pattern '%s' is not valid. Please select one, for all chords use -%s and for all scales -%s",
-					commandLine.getOptionValue(Arguments.PATTERN), Arguments.LIST_CHORDS, Arguments.LIST_SCALE));
-		}
-		return pattern;
-	}
-
-	private int prepareFretLength(final CommandLine commandLine) throws ParseException {
-		final String fretLengthValue = commandLine.getOptionValue(Arguments.FRET, DEFAULT_FRET_LENGTH);
-		try {
-			return Integer.valueOf(fretLengthValue);
-		} catch (final NumberFormatException ex) {
-			throw new ParseException(String.format("Fret length '%s' is not valid. Please provide number.",
-					fretLengthValue));
-		}
-	}
 
 	private void help(final Options options) {
 		final HelpFormatter formatter = new HelpFormatter();

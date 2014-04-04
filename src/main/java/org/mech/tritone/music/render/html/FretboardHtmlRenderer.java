@@ -159,11 +159,6 @@ public class FretboardHtmlRenderer extends AbstractHtmlRenderer<MusicRenderingCo
 		
 	}
 
-	@Override
-	public Format getSupportedFormat() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public boolean supports(final RenderingContext context, final Format format) {

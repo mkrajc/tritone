@@ -27,7 +27,7 @@ public class RendererDispatcher implements ApplicationContextAware {
 		}
 
 		if (!found) {
-			w.println("No renderere found for context. {context=" + context + ", format=" + format + "}");
+			w.println("No renderer found for context. {context=" + context + ", format=" + format + "}");
 		}
 
 		w.flush();
@@ -39,15 +39,11 @@ public class RendererDispatcher implements ApplicationContextAware {
 	public void setApplicationContext(final ApplicationContext context) throws BeansException {
 		final Map rendererMap = context.getBeansOfType(Renderer.class);
 		this.renderers = rendererMap.values();
-		
-		if(CollectionUtils.isEmpty(renderers)){
+
+		if (CollectionUtils.isEmpty(renderers)) {
 			throw new IllegalArgumentException("no renderers found");
-		} else {
-			System.out.println("renderers: " + rendererMap.size());
 		}
-		
-		
-		
+
 	}
 
 }

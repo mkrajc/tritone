@@ -17,6 +17,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<util:map id="commandMap">
 		<entry key="help" value-ref="helpCmd" />
 		<entry key="show" value-ref="showCmd" />
+		<entry key="export" value-ref="exportCmd" />
 	</util:map>
 
 </beans>

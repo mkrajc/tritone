@@ -22,14 +22,17 @@ public interface Arguments {
 	public static final String LIST_TUNING = "lt";
 	public static final String LIST_TUNING_LONG = "listTunings";
 
-	public static final String TUNING = "t";
-	public static final String TUNING_LONG = "tuning";
+	public static final String SI_TUNING = "t";
+	public static final String SI_TUNING_LONG = "tuning";
 	
-	public static final String FRET = "f";
-	public static final String FRET_LONG = "fret";
+	public static final String SI_FRET = "f";
+	public static final String SI_FRET_LONG = "fret";
 	
 	public static final String PATTERN = "p";
 	public static final String PATTERN_LONG = "pattern";
+	
+	public static final String FORMAT = "fmt";
+	public static final String FORMAT_LONG = "formt";
 
 	public static final String TONE = "tn";
 	public static final String TONE_LONG = "tone";

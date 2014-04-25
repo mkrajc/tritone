@@ -6,5 +6,7 @@ public interface HasStrings extends HasTuning {
 	int getStringsCount();
 
 	Pitch getNaturalStringPitch(int stringIndex);
+	
+	String getString(int index);
 
 }

@@ -2,86 +2,106 @@ package org.mech.tritone.music.model.instrument.finger;
 
 public class Fingering {
 
-	private int positionDistance;
+	private final int positionDistance;
 
-	private int fingerIndex;
+	private final FingerType finger;
 	
-	private int startingString;
-
-	public Fingering(int positionDistance, int fingerIndex, int startingString) {
-		super();
-		this.positionDistance = positionDistance;
-		this.fingerIndex = fingerIndex;
-		this.startingString = startingString;
+	private final int startingString;
+	
+	public Fingering(final FingeredPitch fPitch) {
+		this(fPitch.getPitch().getPosition(), fPitch.getFinger(), fPitch.getPitch().getStringIndex());
 	}
 
-	public int getFingerIndex(int position, int string) {
-		int ret;
+	public Fingering(final int positionDistance, final FingerType finger, final int startingString) {
+		super();
+		this.positionDistance = positionDistance;
+		this.finger = finger;
+		this.startingString = startingString;
+	}
+	
+	private int leftOffset(){
+		return 2 + finger.ordinal();
+	}
+	
+	public int from(){
+		return Math.max(0, positionDistance - leftOffset());
+	}
+	
+	public int to(){
+		return positionDistance + rightOffset();
+	}
+	
+	public int rightOffset(){
+		return 6 - finger.ordinal();
+	}
+	
 
-		switch (fingerIndex) {
-		case 1:
-			ret = getFingerIndexFromIndex(position,string);
+	public FingerType getFinger(final int position, final int string) {
+		FingerType ret = null;
+
+		switch (finger) {
+		case INDEX:
+			ret = getFingerIndexFromIndex(position);
 			break;
-		case 2:
-			ret = getFingerIndexFromMiddle(position,string);
+		case MIDDLE:
+			ret = getFingerIndexFromMiddle(position);
 			break;
-		case 4:
+		case PINKY:
 			ret = getFingerIndexFromLittle(position,string);
 			break;
 		default:
-			ret = -1;
 			break;
 		}
 
 		return ret;
 	}
 
-	private int getFingerIndexFromLittle(int position, int string) {
-		int ret = -1;
+	private FingerType getFingerIndexFromLittle(final int position, final int string) {
+		FingerType ret = null;
 
 		final int diff = positionDistance - position;
 		if ((diff == 0 && string == startingString )|| (diff >= -1 && diff <= 0 && string != startingString)) {
-			ret = 4;
+			ret = FingerType.PINKY;
 		} else if (diff == 1) {
-			ret = 3;
+			ret = FingerType.RING;
 		} else if (diff == 2) {
-			ret = 2;
+			ret = FingerType.MIDDLE;
 		} else if (diff >= 2 && diff <= 4) {
-			ret = 1;
+			ret = FingerType.INDEX;
 		}
 
 		return ret;
 	}
 
-	private int getFingerIndexFromMiddle(int fPosition, int string) {
-		int ret = -1;
+	private FingerType getFingerIndexFromMiddle(final int fPosition) {
+		FingerType ret = null;
 
 		final int diff = fPosition - positionDistance;
 		if (diff == 0) {
-			ret = 2;
+			ret = FingerType.MIDDLE;
 		} else if (diff < 0 && diff >= -2) {
-			ret = 1;
+			ret = FingerType.INDEX;
 		} else if (diff == 1) {
-			ret = 3;
+			ret = FingerType.RING;
 		} else if (diff > 1 && diff < 3) {
-			ret = 4;
+			ret = FingerType.PINKY;
 		}
 
 		return ret;
 	}
 
-	private int getFingerIndexFromIndex(int position, int string) {
-		int ret = -1;
+	private FingerType getFingerIndexFromIndex(final int position) {
+		FingerType ret = null ;
 
 		final int diff = position - positionDistance;
 		if (diff == 0) {
-			ret = 1;
+			ret = FingerType.INDEX;
 		} else if (diff == 1) {
-			ret = 2;
+			ret = FingerType.MIDDLE;
 		} else if (diff == 2) {
-			ret = 3;
+			ret = FingerType.RING;
 		} else if (diff >= 2 && diff <= 4) {
-			ret = 4;
+			ret = FingerType.PINKY;
 		}
 
 		return ret;

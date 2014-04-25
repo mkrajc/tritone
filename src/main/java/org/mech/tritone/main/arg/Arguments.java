@@ -25,8 +25,11 @@ public interface Arguments {
 	public static final String SI_TUNING = "t";
 	public static final String SI_TUNING_LONG = "tuning";
 	
-	public static final String SI_FRET = "f";
+	public static final String SI_FRET = "l";
 	public static final String SI_FRET_LONG = "fret";
+	
+	public static final String SI_FINGER = "f";
+	public static final String SI_FINGER_LONG = "finger";
 	
 	public static final String PATTERN = "p";
 	public static final String PATTERN_LONG = "pattern";

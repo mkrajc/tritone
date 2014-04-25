@@ -9,7 +9,7 @@ public class StringedPitch implements Comparable<StringedPitch> {
 	private int stringIndex;
 	private int position;
 
-	public StringedPitch(Pitch pitch, int stringIndex, int position) {
+	public StringedPitch(final Pitch pitch, final int stringIndex, final int position) {
 		super();
 		this.pitch = pitch;
 		this.stringIndex = stringIndex;
@@ -20,7 +20,7 @@ public class StringedPitch implements Comparable<StringedPitch> {
 		return pitch;
 	}
 
-	public void setPitch(Pitch pitch) {
+	public void setPitch(final Pitch pitch) {
 		this.pitch = pitch;
 	}
 
@@ -28,7 +28,7 @@ public class StringedPitch implements Comparable<StringedPitch> {
 		return stringIndex;
 	}
 
-	public void setStringIndex(int stringIndex) {
+	public void setStringIndex(final int stringIndex) {
 		this.stringIndex = stringIndex;
 	}
 
@@ -36,13 +36,13 @@ public class StringedPitch implements Comparable<StringedPitch> {
 		return position;
 	}
 
-	public void setPosition(int position) {
+	public void setPosition(final int position) {
 		this.position = position;
 	}
 
 	@Override
-	public String toString() {
-		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
+	public java.lang.String toString() {
+		final ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 		builder.append(pitch);
 		builder.append(stringIndex);
 		builder.append(position);
@@ -50,8 +50,8 @@ public class StringedPitch implements Comparable<StringedPitch> {
 	}
 
 	@Override
-	public int compareTo(StringedPitch sPitch) {
-		int sIndexCompare = Integer.valueOf(stringIndex).compareTo(sPitch.getStringIndex());
+	public int compareTo(final StringedPitch sPitch) {
+		final int sIndexCompare = Integer.valueOf(stringIndex).compareTo(sPitch.getStringIndex());
 		if (sIndexCompare == 0) {
 			return Integer.valueOf(position).compareTo(sPitch.getPosition());
 		}

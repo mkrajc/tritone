@@ -19,20 +19,23 @@ import org.mech.tritone.music.model.instrument.Range;
  */
 public class StringedInstrument implements Instrument, HasStrings {
 
-	private Tuning tuning;
+	private final Tuning tuning;
+	private final String[] strings;
 	/**
 	 * The pitch range length. How many pitches can be played on one string
 	 **/
-	private int length;
-	private String name;
+	private final int length;
+	private java.lang.String name;
 	private Range range;
-
-	public StringedInstrument() {
-	}
 
 	public StringedInstrument(final Tuning t, final int length) {
 		this.tuning = t;
 		this.length = length;
+		this.strings = new String[tuning.size()];
+
+		for (int i = 0; i < tuning.size(); i++) {
+			strings[i] = new String(tuning.get(i), i, length);
+		}
 	}
 
 	@Override
@@ -40,12 +43,8 @@ public class StringedInstrument implements Instrument, HasStrings {
 		return tuning;
 	}
 
-	public void setTuning(final Tuning tuning) {
-		this.tuning = tuning;
-	}
-
 	@Override
-	public String toString() {
+	public java.lang.String toString() {
 		final ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 		builder.append(name);
 		builder.append(tuning);
@@ -54,17 +53,17 @@ public class StringedInstrument implements Instrument, HasStrings {
 	}
 
 	@Override
-	public String getName() {
+	public java.lang.String getName() {
 		return name;
 	}
 
-	public void setName(final String name) {
+	public void setName(final java.lang.String name) {
 		this.name = name;
 	}
 
 	@Override
 	public int getStringsCount() {
-		return tuning.size();
+		return strings.length;
 	}
 
 	@Override
@@ -74,10 +73,6 @@ public class StringedInstrument implements Instrument, HasStrings {
 
 	public int getLength() {
 		return length;
-	}
-
-	public void setLength(final int length) {
-		this.length = length;
 	}
 
 	@Override
@@ -90,6 +85,11 @@ public class StringedInstrument implements Instrument, HasStrings {
 			range.setTo(lastPitch);
 		}
 		return range;
+	}
+
+	@Override
+	public String getString(final int index) {
+		return strings[index];
 	}
 
 }

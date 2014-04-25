@@ -11,8 +11,8 @@ import org.mech.tritone.music.utils.PitchUtils;
 
 public class Tuning implements HasRange {
 
-	private String name;
-	private String key;
+	private java.lang.String name;
+	private java.lang.String key;
 
 	public void setPitchs(final List<Pitch> pitchs) {
 		this.pitchs = pitchs;
@@ -33,31 +33,31 @@ public class Tuning implements HasRange {
 		return pitchs.size();
 	}
 
-	public void setTuning(final List<String> pitchsNotations) {
+	public void setTuning(final List<java.lang.String> pitchsNotations) {
 		this.pitchs = new ArrayList<Pitch>();
-		for (final String s : pitchsNotations) {
+		for (final java.lang.String s : pitchsNotations) {
 			pitchs.add(PitchUtils.toPitch(s));
 		}
 	}
 
 	@Override
-	public String toString() {
+	public java.lang.String toString() {
 		return Arrays.toString(pitchs.toArray());
 	}
 
-	public String getName() {
+	public java.lang.String getName() {
 		return name;
 	}
 
-	public void setName(final String name) {
+	public void setName(final java.lang.String name) {
 		this.name = name;
 	}
 
-	public String getKey() {
+	public java.lang.String getKey() {
 		return key;
 	}
 
-	public void setKey(final String key) {
+	public void setKey(final java.lang.String key) {
 		this.key = key;
 	}
 

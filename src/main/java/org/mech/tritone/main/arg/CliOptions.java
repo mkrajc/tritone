@@ -30,9 +30,12 @@ public class CliOptions extends Options {
 		addOption(OptionBuilder.withLongOpt(Arguments.SI_FRET_LONG).withDescription("fret length").hasArg()
 				.withArgName("LENGTH").create(Arguments.SI_FRET));
 
+		addOption(OptionBuilder.withLongOpt(Arguments.SI_FINGER_LONG).withDescription("finger").hasArg()
+				.withArgName("LENGTH").create(Arguments.SI_FINGER));
+
 		addOption(OptionBuilder.withLongOpt(Arguments.NOTATION_LONG).withDescription("notation of notes").hasArg()
 				.withArgName("eu|us").create(Arguments.NOTATION));
-		
+
 		addOption(OptionBuilder.withLongOpt(Arguments.FORMAT_LONG).withDescription("format for export").hasArg()
 				.withArgName("html|pure|tab").create(Arguments.FORMAT));
 

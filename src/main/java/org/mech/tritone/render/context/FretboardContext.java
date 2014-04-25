@@ -7,6 +7,7 @@ import org.mech.tritone.music.model.instrument.string.Tuning;
 import org.mech.tritone.render.RenderingContext;
 
 public class FretboardContext extends RenderingContext {
+	private String name;
 	private int fretStart, fretEnd;
 	private boolean renderTuning;
 	private int stringCount;
@@ -73,6 +74,14 @@ public class FretboardContext extends RenderingContext {
 
 	public void setTuning(final Tuning tuning) {
 		this.tuning = tuning;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 }

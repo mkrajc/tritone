@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 
 import org.mech.tritone.music.model.Pitch;
 import org.mech.tritone.music.model.instrument.string.StringedPitch;
+import org.mech.tritone.music.utils.FretboardUtils;
+import org.mech.tritone.music.utils.FretboardUtils.FretboardMark;
 import org.mech.tritone.render.Format;
 import org.mech.tritone.render.context.FretboardContext;
 import org.mech.tritone.render.si.FretboardRenderer;
@@ -88,15 +90,17 @@ public class TabFretboardRenderer extends FretboardRenderer {
 		if (fret == 0 && context.isRenderTuning()) {
 			writer.print("   ");
 		} else {
-			final boolean markFret = fret == 3 || fret == 5 || fret == 7 || fret == 9 || fret == 15 || fret == 17
-					|| fret == 19 || fret == 21;
-			final boolean markDouble = fret == 12 || fret == 24;
-			if (markFret) {
-				writer.print("   *  ");
-			} else if (markDouble) {
-				writer.print("  *** ");
-			} else {
+			final FretboardMark mark = FretboardUtils.getMark(fret);
+			switch (mark) {
+			case NONE:
 				writer.print("      ");
+				break;
+			case DDOT:
+				writer.print("  *** ");
+				break;
+			case DOT:
+				writer.print("   *  ");
+				break;
 			}
 
 		}

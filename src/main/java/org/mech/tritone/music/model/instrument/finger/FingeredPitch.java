@@ -1,6 +1,6 @@
 package org.mech.tritone.music.model.instrument.finger;
 
-import org.mech.tritone.music.model.Pitch;
+import org.mech.tritone.music.model.instrument.string.StringedPitch;
 
 /**
  * Pitch played by finger
@@ -8,20 +8,20 @@ import org.mech.tritone.music.model.Pitch;
 public class FingeredPitch implements Comparable<FingeredPitch> {
 
 	private final FingerType finger;
-	private final Pitch pitch;
+	private final StringedPitch pitch;
 
-	public FingeredPitch(final Pitch pitch, final FingerType finger) {
-		this.finger = finger;
+	public FingeredPitch(final StringedPitch pitch, final FingerType finger) {
+		this.finger = finger; 
 		this.pitch = pitch;
 	}
 
 	public FingerType getFinger() {
 		return finger;
 	}
- 
+
 	@Override
 	public String toString() {
-		return super.toString() + "," + finger.ordinal();
+		return pitch.toString() + "," + finger;
 	}
 
 	@Override
@@ -33,8 +33,9 @@ public class FingeredPitch implements Comparable<FingeredPitch> {
 		return cmp;
 	}
 
-	public Pitch getPitch() {
+	public StringedPitch getPitch() {
 		return pitch;
 	}
+	
 
 }

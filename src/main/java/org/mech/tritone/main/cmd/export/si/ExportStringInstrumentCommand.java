@@ -24,9 +24,12 @@ public abstract class ExportStringInstrumentCommand<C extends RenderingContext> 
 
 	@Override
 	public void execute(final CommandLine commandLine, final List<String> subList) {
+		doExecute(  commandLine, subList);
 		rendererDispatcher.dispatchRender(prepareFormat(commandLine), CommandLineUtils.getWriter(),
 				createContext(commandLine, subList));
 	}
+
+	protected abstract void doExecute(CommandLine commandLine, List<String> subList);
 
 	private Format prepareFormat(final CommandLine commandLine) {
 		final String fmtValue = commandLine.getOptionValue(Arguments.FORMAT);

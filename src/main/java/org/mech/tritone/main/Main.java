@@ -102,7 +102,7 @@ public class Main {
 		    }
 		    
 		    if(line.hasOption(Arguments.EXPORT_PATERN_HTML)){
-		    	String path = line.getOptionValue(Arguments.HTML_PATH,".\\index.html");
+		    	String path = line.getOptionValue(Arguments.HTML_PATH,"./index.html");
 		    	Tuning tuning = null;
 		    	Pattern pattern = null;
 		    	Pitch pitch = null;
